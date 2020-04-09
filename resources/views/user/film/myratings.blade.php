@@ -19,7 +19,7 @@
 
                         <div class="table-responsive">
                             <table class="table dataTableFilm"
-                                   data-ajax="{{ route('api.film.dt.myratings') }}">
+                                   data-ajax="{{ $dataAjaxUrl }}">
                                 <thead>
                                 <tr>
                                     <th style="width: 75px"></th>

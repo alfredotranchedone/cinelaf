@@ -13,7 +13,7 @@
                 <div class="card shadow">
 
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <span>Aggiungi Movie</span>
+                        <span>Aggiungi Film</span>
                         <span class="small">Step 2 di 3</span>
                     </div>
 
@@ -34,6 +34,7 @@
                         <form action="{{ route('film.add.step_3') }}" method="post">
                             @csrf
 
+
                             <div class="form-group">
                                 <label for="titolo">Titolo del Movie</label>
                                 <input type="text"
@@ -42,6 +43,19 @@
                                        id="titolo"
                                        readonly
                                        value="{{ session( config('cinelaf.sessions_key.film.new') )['titolo'] }}">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="type">Tipologia</label>
+                                <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}"
+                                        name="type"
+                                        required
+                                        id="type">
+                                    <option value="" disabled selected>Seleziona...</option>
+                                    <option value="{{ \Cinelaf\Configuration\Configuration::TYPE_MOVIE }}">{{ __('Movies') }}</option>
+                                    <option value="{{ \Cinelaf\Configuration\Configuration::TYPE_SERIES }}">{{ __('Series') }}</option>
+                                </select>
                             </div>
 
 

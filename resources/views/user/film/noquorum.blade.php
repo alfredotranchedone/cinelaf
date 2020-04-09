@@ -36,7 +36,7 @@
 
                         <div class="table-responsive">
                             <table id="tblFilm" class="table dataTableFilm table-striped"
-                                   data-ajax="{{ route('api.film.dt.noquorum') }}">
+                                   data-ajax="{{ $dataAjaxUrl }}">
                                 <thead>
                                 <tr>
                                     <th style="width: 75px"></th>

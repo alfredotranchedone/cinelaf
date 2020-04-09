@@ -1,2 +1,5 @@
-# Cinelaf
-## Community-driven Movies/Series ranking 
+
+![Cinelaf](cinelaf.png)
+
+## About
+

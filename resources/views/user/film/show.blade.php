@@ -13,7 +13,7 @@
             <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white d-flex justify-content-between">
-                        <span>Scheda Movie</span>
+                        <span>Scheda Film</span>
                         <div>
                             <span class="badge badge-light">
                                 # {{ $film->rank ?? '-' }}
@@ -45,8 +45,24 @@
 
                             <div class="order-0 order-lg-1 mx-3 d-flex flex-fill flex-column justify-content-between">
                                 <div>
-                                    <h5>{{ $film->anno }}</h5>
-                                    <h2>{{ $film->titolo }}</h2>
+
+                                    <div class="mb-2">
+
+                                        <span class="badge badge-success">
+                                            @if($film->isSeries())
+                                                <i class="fa fa-tv fa-fw"></i>
+                                                {{ __('Series') }}
+                                            @elseif($film->isMovie())
+                                                <i class="fa fa-film fa-fw"></i>
+                                                {{ __('Movie') }}
+                                            @endif
+                                        </span>
+
+                                    </div>
+
+                                    <h5 class="mb-0">{{ $film->anno }}</h5>
+
+                                    <h2 class="">{{ $film->titolo }}</h2>
 
                                     <h6 class="mb-2">
                                         @include('inc.registi',[
@@ -54,29 +70,32 @@
                                         ])
                                     </h6>
 
-                                    @php
-                                        $sanitizedTitle = urlencode($film->titolo);
-                                    @endphp
+                                    <section>
 
-                                    <div class="pt-1 pb-2">
-                                        <a href="https://www.mymovies.it/database/ricerca/avanzata/?titolo={{ $sanitizedTitle }}&titolo_orig=&regista=&attore=&id_genere=-1&nazione=&clausola1=-1&anno_prod={{ $film->anno }}&clausola2=-1&stelle=-1&id_manif=-1&anno_manif=&disponib=-1&ordinamento=0&submit=Inizia+ricerca+%C2%BB"
-                                           target="_blank"
-                                           class="small text-decoration-none">
-                                            <i class="fa fa-search fa-fw"></i>
-                                            Cerca su MyMovies.it
-                                            <i class="fa fa-angle-double-right fa-fw"></i>
-                                        </a>
-                                    </div>
+                                        @php
+                                            $sanitizedTitle = urlencode($film->titolo);
+                                        @endphp
 
-                                    <div class="pt-1 pb-2">
-                                        <a href="https://www.imdb.com/find?q={{ $sanitizedTitle }}"
-                                           target="_blank"
-                                           class="small text-decoration-none">
-                                            <i class="fa fa-search fa-fw"></i>
-                                            Cerca su IMDb.com
-                                            <i class="fa fa-angle-double-right fa-fw"></i>
-                                        </a>
-                                    </div>
+                                        <div class="pt-1 pb-0">
+                                            <a href="https://www.mymovies.it/database/ricerca/avanzata/?titolo={{ $sanitizedTitle }}&titolo_orig=&regista=&attore=&id_genere=-1&nazione=&clausola1=-1&anno_prod={{ $film->anno }}&clausola2=-1&stelle=-1&id_manif=-1&anno_manif=&disponib=-1&ordinamento=0&submit=Inizia+ricerca+%C2%BB"
+                                               target="_blank"
+                                               class="small text-decoration-none">
+                                                <i class="fa fa-search fa-fw"></i>
+                                                Cerca su MyMovies.it
+                                                <i class="fa fa-angle-double-right fa-fw"></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="pt-1 pb-2">
+                                            <a href="https://www.imdb.com/find?q={{ $sanitizedTitle }}"
+                                               target="_blank"
+                                               class="small text-decoration-none">
+                                                <i class="fa fa-search fa-fw"></i>
+                                                Cerca su IMDb.com
+                                                <i class="fa fa-angle-double-right fa-fw"></i>
+                                            </a>
+                                        </div>
+                                    </section>
 
                                 </div>
 

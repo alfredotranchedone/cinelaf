@@ -19,7 +19,7 @@
 
                         <div class="table-responsive">
                             <table class="table table-striped dataTableFilm"
-                                   data-ajax="{{ route('api.film.dt.mynotrated') }}">
+                                   data-ajax="{{ $dataAjaxUrl }}">
                                 <thead>
                                 <tr>
                                     <th style="width: 75px"></th>

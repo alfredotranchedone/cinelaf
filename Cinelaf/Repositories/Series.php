@@ -9,15 +9,31 @@ namespace Cinelaf\Repositories;
 
 
 use Cinelaf\Configuration\Configuration;
+use Cinelaf\Repositories\Common\Common;
 
-class Series
+class Series extends Common
 {
 
-    public $table = 'films';
-    private $type = Configuration::TYPE_SERIES;
+
+    /**
+     * Series constructor.
+     */
+    public function __construct()
+    {
+        $this->type = Configuration::TYPE_SERIES;
+        $this->model = \Cinelaf\Models\Series::class;
+    }
 
 
 
+    public function getLatestCreated($limit = 5)
+    {
+
+        return $this->model::latest()
+            ->with('user')
+            ->limit($limit)
+            ->get();
+    }
 
 
 }

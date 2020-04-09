@@ -8,8 +8,7 @@
 namespace Cinelaf\Controllers\Admin;
 
 
-use App\User;
-use Cinelaf\Models\Movie;
+use Cinelaf\Models\Film;
 use Cinelaf\Repositories\Rating;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Repositories\Watchlist;
@@ -17,8 +16,6 @@ use Cinelaf\Services\Upload;
 use Cinelaf\Traits\Redirectable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class FilmController extends BaseController
@@ -27,7 +24,7 @@ class FilmController extends BaseController
     use Redirectable;
 
 
-    public function get_edit(Movie $film)
+    public function get_edit(Film $film)
     {
 
         return view('admin.film.edit', compact(
@@ -36,7 +33,7 @@ class FilmController extends BaseController
 
     }
 
-    public function put_update(Request $request, Movie $film)
+    public function put_update(Request $request, Film $film)
     {
 
         $this->validate($request,[
@@ -90,7 +87,7 @@ class FilmController extends BaseController
     }
 
 
-    public function delete(Registi $registiRepo, Rating $ratingRepo, Upload $uploadService, Watchlist $watchlistRepo, Movie $film)
+    public function delete(Registi $registiRepo, Rating $ratingRepo, Upload $uploadService, Watchlist $watchlistRepo, Film $film)
     {
         try {
 
@@ -122,7 +119,7 @@ class FilmController extends BaseController
     }
 
 
-    public function forceDelete(Request $request, \Cinelaf\Repositories\Movie $filmRepo)
+    public function forceDelete(Request $request, \Cinelaf\Repositories\Film $filmRepo)
     {
 
         try {

@@ -9,40 +9,84 @@ namespace Cinelaf\Repositories\Common;
 
 
 use Carbon\Carbon;
+use Cinelaf\Configuration\Configuration;
+use Cinelaf\Models\Film;
 use Cinelaf\Models\Rating;
+use Cinelaf\Resources\FilmSelectResource;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Common
 {
 
+    public $table = 'films';
+    protected $type;
+    protected $model;
 
     /**
-     * @param int|null $type
+     * @param string      $format
+     * @param int         $limit
+     * @param string|null $terms
+     * @param bool        $withRegisti
+     * @param bool        $withOwner
      *
-     * @return int
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|Collection
      */
-    public function countNotRatedByType(int $type = null)
+    public function get(string $format = 'full', int $limit = 50, string $terms = null, bool $withRegisti=false, bool $withOwner=false)
     {
 
-        $data = DB::table('films as f')
-            ->selectRaw('f.*, r.voto')
-            ->leftJoin('ratings as r','r.film_id','=','f.id')
-            ->whereNull('r.voto')
-            ->whereNull('f.deleted_at');
+        if(!$format)
+            $format='full';
 
-        if($type)
-            $data->where('f.type',$type);
+        $data = $this->model::when($terms, function ($q) use ($terms) {
+            return $q->whereRaw("titolo LIKE ?", ['%' . $terms . '%']);
+        })
+            ->when($limit, function ($q) use ($limit) {
+                return $q->limit($limit);
+            })
+            ->when($withRegisti, function ($q) {
+                return $q->with(['regista' => function($u){
+                    $u->select('registi.id','nome','cognome');
+                }]);
+            })
+            ->when($withOwner, function ($q) {
+                return $q->with(['user' => function($u){
+                    $u->select('id','name','email');
+                }]);
+            })
+            ->orderBy('titolo');
 
-        $out = $data->count();
+        $out = $data->get();
+
+        if($format=='select'){
+            $out = FilmSelectResource::collection($out);
+        }
 
         return $out;
 
     }
 
 
+
+    public function filter(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
+    {
+
+        $data = $this->model::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
+            ->offset($offset)
+            ->with('regista')
+            ->limit($limit)
+            ->orderByRaw($orderby);
+
+        $out = $data->get();
+
+        return $out;
+
+    }
+
+
+
+
     /**
-     * @param int|null    $type
      * @param string|null $terms
      * @param int         $offset
      * @param int         $limit
@@ -50,9 +94,10 @@ class Common
      *
      * @return \Illuminate\Support\Collection
      */
-    public function filterMyRatingByType(int $type = null, string $terms = null, int $offset = 0, int $limit = 50, string $orderby='ratings.updated_at DESC')
+    public function filterMyRating(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='ratings.updated_at DESC')
     {
 
+        $user_id = auth()->id();
         $data = DB::table('ratings')
             ->selectRaw('ratings.*, 
                 ratings.user_id as rating_user_id, 
@@ -63,15 +108,15 @@ class Common
                 f.created_at as film_created_at, 
                 f.updated_at as film_updated_at')
             ->whereRaw("CONCAT(titolo, anno) LIKE ?", ['%' . $terms . '%'])
-            ->where('ratings.user_id',auth()->id())
+            ->where('ratings.user_id', $user_id)
             ->whereNull('f.deleted_at')
             ->leftJoin('films as f','f.id','=','ratings.film_id')
             ->offset($offset)
             ->limit($limit)
             ->orderByRaw($orderby);
 
-        if($type)
-            $data->where('f.type',$type);
+        if($this->type)
+            $data->where('f.type',$this->type);
 
         $out = $data->get();
 
@@ -105,7 +150,7 @@ class Common
 
 
 
-    public function filterMyNotRatedByType(int $type = null, string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
+    public function filterMyNotRated(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
     {
 
         /*
@@ -141,8 +186,8 @@ class Common
             ->limit($limit)
             ->orderByRaw($orderby);
 
-        if($type)
-            $data->where('f.type',$type);
+        if($this->type)
+            $data->where('f.type', $this->type);
 
         $out = $data->get();
 
@@ -163,7 +208,56 @@ class Common
     }
 
 
-    public function countMyNotRatedByType(int $type = null)
+
+    public function filterNoQuorum(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
+    {
+
+        $data = $this->model::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
+            ->offset($offset)
+            ->with('regista')
+            ->where('valutazione',0)
+            ->limit($limit)
+            ->orderByRaw($orderby);
+
+        $out = $data->get();
+
+        return $out;
+
+    }
+
+
+
+    public function count()
+    {
+        return $this->model::count();
+    }
+
+
+
+    /**
+     * @return int
+     */
+    public function countNotRated()
+    {
+
+        $data = DB::table('films as f')
+            ->selectRaw('f.*, r.voto')
+            ->leftJoin('ratings as r','r.film_id','=','f.id')
+            ->whereNull('r.voto')
+            ->whereNull('f.deleted_at');
+
+        if($this->type)
+            $data->where('f.type', $this->type);
+
+        $out = $data->count();
+
+        return $out;
+
+    }
+
+
+
+    public function countMyNotRated()
     {
 
         /*
@@ -178,8 +272,8 @@ class Common
             ->whereRaw("f.id NOT IN ( SELECT film_id FROM ratings WHERE user_id = ? )", [auth()->id()])
             ->whereNull('deleted_at');
 
-        if($type)
-            $data->where('f.type',$type);
+        if($this->type)
+            $data->where('f.type',$this->type);
 
         $out = $data->count();
 
@@ -188,7 +282,7 @@ class Common
     }
 
 
-    public function countNoQuorumByType(int $type = null)
+    public function countNoQuorum()
     {
 
         $data = DB::table('films as f')
@@ -197,8 +291,8 @@ class Common
 
         $out = $data->count();
 
-        if($type)
-            $data->where('f.type',$type);
+        if($this->type)
+            $data->where('f.type', $this->type);
 
         return $out;
 
@@ -212,7 +306,35 @@ class Common
         return $this->rated('best',$limit);
     }
 
+    /**
+     * @param int    $limit
+     * @param string $type  'best' | 'worst'
+     *
+     * @return Collection
+     */
+    public function rated(string $type, int $limit=5)
+    {
 
+        $direction = null;
+        switch ($type){
+            case 'best':
+                $direction = 'DESC';
+                break;
+            case 'worst':
+                $direction = 'ASC';
+                break;
+        }
+
+
+        $coll = $this->model::orderBy('valutazione',$direction)
+            ->with('user')
+            ->where('valutazione','>','0')
+            ->limit($limit)
+            ->get();
+
+        return $coll;
+
+    }
 
     public function worstRated(int $limit=5)
     {
@@ -221,13 +343,10 @@ class Common
 
     }
 
-
-
-
-
-
-
     /**
+     *
+     * Return all films!!!
+     *
      * @param int    $limit
      * @param string $type  'most' | 'least'
      *
@@ -267,12 +386,73 @@ class Common
 
 
 
+    public function myRatingCount()
+    {
+        $user_id = auth()->id();
+        return DB::table('ratings')
+            ->distinct('film_id')
+            ->where('user_id',$user_id)
+            ->count('film_id');
+    }
+
+    public function myRating()
+    {
+        $user_id = auth()->id();
+        return Rating::with('film')
+            ->where('user_id', $user_id)
+            ->get();
+    }
+
+
+
+
+
+
+    public function getLatestCreated($limit = 5)
+    {
+
+        return Film::latest()
+            ->with('user')
+            ->limit($limit)
+            ->get();
+    }
+
+
+
+
+    public function save($titolo, $anno, $locandina, $type)
+    {
+
+        $film = new Film();
+        $film->titolo = $titolo;
+        $film->anno = $anno;
+        $film->locandina = $locandina;
+        $film->user_id = auth()->user()->id;
+        $film->type = $type ?? Configuration::TYPE_MOVIE;
+        $film->save();
+
+        return $film;
+
+    }
+
+
+
+    public function getTrashed()
+    {
+        return $this->model::onlyTrashed()->orderBy('titolo')->get();
+    }
+
+
 
 
     public function forceDelete(int $film_id)
     {
         return DB::table('films')->where('id',$film_id)->delete();
     }
+
+
+
+
 
 
 }

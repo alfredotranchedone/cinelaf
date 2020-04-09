@@ -8,6 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
+use Cinelaf\Models\Film;
 use Cinelaf\Models\Movie;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Services\FilmService;
@@ -26,8 +27,11 @@ class FilmController extends BaseController
     public function get_index()
     {
 
-        $dataAjaxUrl = route('api.film.dt.all');
-        return view('user.film.index', compact('dataAjaxUrl'));
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.all');
+
+        return view('user.film.index', $viewPar
+        );
 
     }
 
@@ -64,22 +68,25 @@ class FilmController extends BaseController
             return redirect()->route('film.add.step_2');
 
         $regista = $request->regista;
+        $type = $request->type;
 
         $fs = $filmSession
             ->setRegista($regista)
+            ->setType($type)
             ->save();
 
         $titolo = $fs['titolo'];
+        $type = $fs['type'];
         $regista_string = $registiRepo->getNominativoFromId($regista,true);
 
         return view('user.film.add_step_3', compact(
-            'regista_string','titolo'
+            'regista_string','titolo','type'
         ));
 
     }
 
 
-    public function post_create(Request $request, Upload $uploadService, FilmSession $filmSession, Registi $registiRepo, \Cinelaf\Repositories\Movie $filmRepo)
+    public function post_create(Request $request, Upload $uploadService, FilmSession $filmSession, Registi $registiRepo, \Cinelaf\Repositories\Film $filmRepo)
     {
 
         $this->validate($request,[
@@ -98,7 +105,7 @@ class FilmController extends BaseController
             $fileNameToStore = $uploadService->locandina($request);
 
             // Salva film
-            $film = $filmRepo->save($currentFilm['titolo'], $request->anno, $fileNameToStore);
+            $film = $filmRepo->save($currentFilm['titolo'], $request->anno, $fileNameToStore, $currentFilm['type']);
 
             // Salva regista
             $registiRepo->attachRegistaToFilm($currentFilm['regista'], $film->id);
@@ -130,7 +137,7 @@ class FilmController extends BaseController
     }
 
 
-    public function get_show(Movie $film, FilmService $filmService)
+    public function get_show(Film $film, FilmService $filmService)
     {
 
         $film->load(['user','regista','rating.user']);
@@ -139,6 +146,7 @@ class FilmController extends BaseController
         }]);
 
         $rating = $film->rating;
+
         $valutazione = $filmService->valutazione($rating);
 
         return view('user.film.show', compact(
@@ -150,14 +158,19 @@ class FilmController extends BaseController
     public function get_my_ratings()
     {
 
-        return view('user.film.myratings');
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.myratings');
+
+        return view('user.film.myratings', $viewPar);
 
     }
 
     public function get_my_not_rated()
     {
 
-        return view('user.film.mynotrated');
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.mynotrated');
+        return view('user.film.mynotrated', $viewPar);
 
     }
 
@@ -165,8 +178,23 @@ class FilmController extends BaseController
     public function get_no_quorum()
     {
 
-        return view('user.film.noquorum');
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.noquorum');
+        return view('user.film.noquorum', $viewPar);
 
     }
+
+
+
+    private function routeVar(){
+
+        $routeMyRating = route('film.myratings');
+        $routeMyNotRated = route('film.mynotrated');
+        $routeNoQuorum = route('film.noquorum');
+
+        return compact('routeMyRating','routeNoQuorum','routeMyNotRated');
+
+    }
+
     
 }

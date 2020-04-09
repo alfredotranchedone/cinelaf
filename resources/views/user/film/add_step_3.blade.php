@@ -11,7 +11,7 @@
                 <div class="card shadow">
 
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <span>Aggiungi Movie</span>
+                        <span>Aggiungi Film</span>
                         <span class="small">Step 3 di 3</span>
                     </div>
 
@@ -51,6 +51,24 @@
                                        id="regista"
                                        readonly
                                        value="{{ $regista_string }}">
+                            </div>
+
+
+                            @php
+                                if($type == \Cinelaf\Configuration\Configuration::TYPE_MOVIE){
+                                    $label = __('Movies');
+                                } elseif ($type == \Cinelaf\Configuration\Configuration::TYPE_SERIES){
+                                    $label = __('Series');
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="regista">Tipologia</label>
+                                <input type="text"
+                                       class="form-control-plaintext form-control-lg "
+                                       name="type"
+                                       id="type"
+                                       readonly
+                                       value="{{ $label }}">
                             </div>
 
 

@@ -64,7 +64,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item {{ (request()->is('series')) ? 'active' : '' }}">
+                        <li class="nav-item {{ (request()->is('series*')) ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('series.index') }}">
                                 <i class="fas fa-tv fa-fw"></i>
                                 {{ __('Series') }}

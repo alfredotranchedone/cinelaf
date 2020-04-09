@@ -17,7 +17,7 @@ class Rating extends Model
     protected $table = 'ratings';
 
     public function film() {
-        return $this->belongsTo(Movie::class);
+        return $this->belongsTo(Film::class,'film_id');
     }
 
     public function user() {

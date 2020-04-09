@@ -26,17 +26,17 @@
 
                         <div class="d-flex flex-even justify-content-center align-items-baseline">
                             <h1 class="mb-0 mr-2 font-weight-bold">{{ $totalFilm }}</h1>
-                            <div class="text-secondary">film presenti</div>
+                            <div class="text-secondary">titoli presenti</div>
                         </div>
 
                         <div class="d-flex flex-even justify-content-center align-items-baseline no-border-sm border-left border-right">
                             <h1 class="mb-0 mr-2 font-weight-bold">{{ $myRatingCount }}</h1>
-                            <div class="text-secondary">film valutati</div>
+                            <div class="text-secondary">titoli valutati</div>
                         </div>
 
                         <div class="d-flex flex-even justify-content-center align-items-baseline">
                             <h1 class="mb-0 mr-2 font-weight-bold">{{ ($totalFilm - $myRatingCount) }}</h1>
-                            <div class="text-secondary">film da valutare</div>
+                            <div class="text-secondary">titoli da valutare</div>
                         </div>
 
                     </div>
