@@ -9,7 +9,6 @@ namespace Cinelaf\Models;
 
 
 use App\User;
-use Cinelaf\Film;
 use Illuminate\Database\Eloquent\Model;
 
 class Watchlist extends Model

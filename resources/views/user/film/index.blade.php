@@ -36,7 +36,7 @@
 
                         <div class="table-responsive">
                             <table id="tblFilm" class="table dataTableFilm table-striped"
-                                   data-ajax="{{ route('api.film.dt.all') }}">
+                                   data-ajax="{{ $dataAjaxUrl ?? route('api.film.dt.all') }}">
                                 <thead>
                                 <tr>
                                     <th style="width: 75px"></th>

@@ -5,5 +5,14 @@
   "Password" : "Password",
   "Remember Me" : "Ricordami",
   "Forgot Your Password?" : "Recupera la password",
-  "Send Password Reset Link": "Invia link per il reset della password"
+  "Send Password Reset Link": "Invia link per il reset della password",
+  "Add": "Aggiungi",
+  "Movies": "Film",
+  "Series": "Serie",
+  "Administration": "Amministrazione",
+  "Profile": "Profilo",
+  "Title": "Titolo",
+  "Year": "Years",
+  "Rating": "Valutazione",
+  "Rated": "Votati"
 }

@@ -11,10 +11,10 @@ return [
 
     'sessions_key' => [
         'film' => [
-            'new' => 'film:new'
+            'new' => \Cinelaf\Configuration\Configuration::SESSION_FILM_NEW
         ],
         'watchlist' => [
-            'total' => 'watchlist:total'
+            'total' => \Cinelaf\Configuration\Configuration::SESSION_WATCHLIST_TOTAL
         ]
     ],
 

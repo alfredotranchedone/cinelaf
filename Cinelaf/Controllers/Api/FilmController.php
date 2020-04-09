@@ -8,7 +8,7 @@
 namespace Cinelaf\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
 use Cinelaf\Repositories\Film as FilmRepo;
 use Cinelaf\Resources\FilmResource;
 use Cinelaf\Traits\ApiResponse;

@@ -9,7 +9,7 @@ namespace Cinelaf\Controllers\Admin;
 
 
 use App\User;
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
 use Cinelaf\Repositories\Rating;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Repositories\Watchlist;

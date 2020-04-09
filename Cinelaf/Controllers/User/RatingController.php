@@ -8,7 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
 use Cinelaf\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

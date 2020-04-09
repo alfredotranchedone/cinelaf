@@ -8,7 +8,6 @@
 namespace Cinelaf\Models;
 
 
-use Cinelaf\Film;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

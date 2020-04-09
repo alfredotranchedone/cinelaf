@@ -8,7 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Services\FilmService;
 use Cinelaf\Services\FilmSession;
@@ -20,6 +20,16 @@ use Illuminate\Support\Facades\DB;
 class FilmController extends BaseController
 {
 
+
+
+
+    public function get_index()
+    {
+
+        $dataAjaxUrl = route('api.film.dt.all');
+        return view('user.film.index', compact('dataAjaxUrl'));
+
+    }
 
 
     public function get_add(FilmSession $filmSession)
@@ -116,18 +126,6 @@ class FilmController extends BaseController
 
         }
 
-
-    }
-
-
-    public function get_index()
-    {
-
-        $film = DB::table('films')->orderBy('titolo')->paginate(25);
-
-        return view('user.film.index', compact(
-            'film'
-        ));
 
     }
 

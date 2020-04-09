@@ -9,9 +9,7 @@ namespace Cinelaf\Models;
 
 
 use App\User;
-use Cinelaf\Film;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Rating extends Model
 {

@@ -8,7 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
 use Cinelaf\Logger\Logger;
 use Cinelaf\Repositories\Watchlist;
 use Cinelaf\Traits\Redirectable;

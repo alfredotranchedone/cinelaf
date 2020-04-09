@@ -8,8 +8,6 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Film;
-use Cinelaf\Models\Regista;
 use Cinelaf\Repositories\Registi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

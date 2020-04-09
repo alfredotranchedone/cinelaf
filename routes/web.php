@@ -59,6 +59,7 @@ Route::namespace('\Cinelaf\Controllers\Api')
 
                     });
 
+
                 Route::prefix('registi')
                     ->name('registi.')
                     ->group(function (){
@@ -133,6 +134,17 @@ Route::namespace('\Cinelaf\Controllers\User')
                 Route::get('/{film}/vota','RatingController@get_vota')->name('vota');
                 Route::post('/{film}/vota','RatingController@post_vota')->name('vota.save');
                 Route::delete('/{film}/vota/delete','RatingController@delete')->name('vota.delete');
+
+            });
+
+
+
+        /* Film */
+        Route::prefix('series')
+            ->name('series.')
+            ->group(function (){
+
+                Route::get('/','SeriesController@get_index')->name('index');
 
             });
 
