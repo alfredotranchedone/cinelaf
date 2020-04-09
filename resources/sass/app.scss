@@ -1,0 +1,56 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+// Variables
+@import 'variables';
+
+@import "~select2/dist/css/select2.min.css";
+@import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css";
+
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+
+body {
+  background: url("../img/bg-cinelaf.jpg") repeat $body-bg;
+}
+
+.fit {
+  width:1%;
+  white-space:nowrap;
+}
+
+.navbar-brand {
+  color: #ffffff !important;
+}
+
+.bg-indigo {
+  background-color: $indigo !important;
+}
+.bg-purple {
+  background-color: $purple !important;
+}
+
+.text-indigo {
+  color: $indigo !important;
+}
+
+
+/* BS equal width */
+// https://stackoverflow.com/questions/51775461/why-is-flex-fill-not-creating-equal-width-in-bootstrap
+.flex-even {
+  flex: 1;
+}
+
+/* Responsive */
+@media screen and (max-width: 767px){
+  .no-border-sm {
+    border: none !important;
+  }
+}
+
+
+/* Override */
+.list-group-item {
+  margin-bottom: 0;
+}
+

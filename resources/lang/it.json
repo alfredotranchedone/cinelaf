@@ -1,0 +1,9 @@
+{
+  "Login": "Accedi",
+  "Logout": "Esci",
+  "E-Mail Address" : "E-mail",
+  "Password" : "Password",
+  "Remember Me" : "Ricordami",
+  "Forgot Your Password?" : "Recupera la password",
+  "Send Password Reset Link": "Invia link per il reset della password"
+}
