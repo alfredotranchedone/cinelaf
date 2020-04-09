@@ -14,7 +14,7 @@ use Cinelaf\Repositories\Common\Common;
 use Cinelaf\Resources\FilmSelectResource;
 use Illuminate\Support\Facades\DB;
 
-class Film extends Common
+class Movie extends Common
 {
 
     public $table = 'films';
@@ -22,7 +22,7 @@ class Film extends Common
 
     public function getLatestCreated($limit = 5)
     {
-        return \Cinelaf\Models\Film::latest()
+        return \Cinelaf\Models\Movie::latest()
             ->with('user')
             ->limit($limit)
             ->get();
@@ -31,12 +31,12 @@ class Film extends Common
 
     public function getTrashed()
     {
-        return \Cinelaf\Models\Film::onlyTrashed()->orderBy('titolo')->get();
+        return \Cinelaf\Models\Movie::onlyTrashed()->orderBy('titolo')->get();
     }
 
     public function count()
     {
-        return \Cinelaf\Models\Film::count();
+        return \Cinelaf\Models\Movie::count();
     }
 
 
@@ -61,7 +61,7 @@ class Film extends Common
         if(!$format)
             $format='full';
 
-        $data = \Cinelaf\Models\Film::when($terms, function ($q) use ($terms) {
+        $data = \Cinelaf\Models\Movie::when($terms, function ($q) use ($terms) {
                 return $q->whereRaw("titolo LIKE ?", ['%' . $terms . '%']);
             })
             ->when($limit, function ($q) use ($limit) {
@@ -95,7 +95,7 @@ class Film extends Common
     public function filter(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
     {
 
-        $data = \Cinelaf\Models\Film::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
+        $data = \Cinelaf\Models\Movie::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
             ->offset($offset)
             ->with('regista')
             ->limit($limit)
@@ -111,7 +111,7 @@ class Film extends Common
     public function filterNoQuorum(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
     {
 
-        $data = \Cinelaf\Models\Film::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
+        $data = \Cinelaf\Models\Movie::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
             ->offset($offset)
             ->with('regista')
             ->where('valutazione',0)
@@ -183,7 +183,7 @@ class Film extends Common
             ->get();
         */
 
-        $coll = \Cinelaf\Models\Film::orderBy('valutazione',$direction)
+        $coll = \Cinelaf\Models\Movie::orderBy('valutazione',$direction)
             ->with('user')
             ->where('valutazione','>','0')
             ->limit($limit)
@@ -197,7 +197,7 @@ class Film extends Common
     public function save($titolo, $anno, $locandina)
     {
 
-        $film = new \Cinelaf\Models\Film();
+        $film = new \Cinelaf\Models\Movie();
         $film->titolo = $titolo;
         $film->anno = $anno;
         $film->locandina = $locandina;

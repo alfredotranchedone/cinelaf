@@ -12,14 +12,14 @@
             <div class="col-sm-8">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white">
-                        <span>Film Senza Quorum</span>
+                        <span>Movie Senza Quorum</span>
                     </div>
 
                     <div class="p-3 border-bottom bg-light">
 
                             <a class="btn btn-primary btn-sm mr-2" href="{{ route('film.index') }}">
                                 <i class="fa fa-list-alt fa-fw"></i>
-                                Tutti i Film
+                                Tutti i Movie
                             </a>
                             <a class="btn btn-primary btn-sm mr-2"  href="{{ route('film.myratings') }}">
                                 <i class="fa fa-check-circle fa-fw"></i>

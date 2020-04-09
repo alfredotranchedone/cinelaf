@@ -58,7 +58,7 @@ class RegistiController extends BaseController
 
             return redirect()
                 ->back()
-                ->with('msg','Errore nella creazione del Film')
+                ->with('msg','Errore nella creazione del Movie')
                 ->with('msgType','danger');
 
         }

@@ -7,10 +7,7 @@
 
 namespace Cinelaf\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Cinelaf\Models\Film;
-use Cinelaf\Repositories\Film as FilmRepo;
-use Cinelaf\Resources\FilmResource;
+use Cinelaf\Repositories\Movie as MovieRepo;
 use Cinelaf\Traits\ApiResponse;
 use Cinelaf\Traits\DatatablesApiRequest;
 use Cinelaf\Traits\DatatablesApiResponse;
@@ -24,30 +21,30 @@ class FilmController extends BaseApiController
     protected $version = 1;
 
     /**
-     * @param Request  $request
-     * @param FilmRepo $filmRepo
+     * @param Request   $request
+     * @param MovieRepo $movieRepo
      *
      * @return \Illuminate\Support\Collection
      */
-    public function get_all(Request $request, FilmRepo $filmRepo)
+    public function get_all(Request $request, MovieRepo $movieRepo)
     {
 
         $q = $request->q;
         $format = $request->query('format') ?? 'full';
 
-        return $filmRepo->get($format,5,$q,true,true);
+        return $movieRepo->get($format,5,$q,true,true);
 
     }
 
 
     /**
-     * @param Request  $request
-     * @param FilmRepo $filmRepo
+     * @param Request   $request
+     * @param MovieRepo $movieRepo
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function get_dt_all(Request $request, FilmRepo $filmRepo)
+    public function get_dt_all(Request $request, MovieRepo $movieRepo)
     {
 
         $dt_request = $this->datatable_process_request($request);
@@ -74,8 +71,8 @@ class FilmController extends BaseApiController
         }
         $orderBy = "$column $orderDir";
 
-        $data = $filmRepo->filter($q,$offset,$limit,$orderBy);
-        $totale = $filmRepo->count();
+        $data = $movieRepo->filter($q,$offset,$limit,$orderBy);
+        $totale = $movieRepo->count();
 
         return $this->datatable_success_api_response($request, $totale, $data);
 
@@ -83,13 +80,13 @@ class FilmController extends BaseApiController
 
 
     /**
-     * @param Request  $request
-     * @param FilmRepo $filmRepo
+     * @param Request   $request
+     * @param MovieRepo $movieRepo
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function get_dt_myratings(Request $request, FilmRepo $filmRepo)
+    public function get_dt_myratings(Request $request, MovieRepo $movieRepo)
     {
 
         $dt_request = $this->datatable_process_request($request);
@@ -116,8 +113,8 @@ class FilmController extends BaseApiController
         }
         $orderBy = "$column $orderDir";
 
-        $data = $filmRepo->filterMyRating($q,$offset,$limit,$orderBy);
-        $totale = $filmRepo->myRatingCount();
+        $data = $movieRepo->filterMyRating($q,$offset,$limit,$orderBy);
+        $totale = $movieRepo->myRatingCount();
 
         return $this->datatable_success_api_response($request, $totale, $data);
 
@@ -126,13 +123,13 @@ class FilmController extends BaseApiController
 
 
     /**
-     * @param Request  $request
-     * @param FilmRepo $filmRepo
+     * @param Request   $request
+     * @param MovieRepo $movieRepo
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function get_dt_mynotrated(Request $request, FilmRepo $filmRepo)
+    public function get_dt_mynotrated(Request $request, MovieRepo $movieRepo)
     {
 
         $dt_request = $this->datatable_process_request($request);
@@ -159,8 +156,8 @@ class FilmController extends BaseApiController
         }
         $orderBy = "$column $orderDir";
 
-        $data = $filmRepo->filterMyNotRated($q,$offset,$limit,$orderBy);
-        $totale = $filmRepo->countMyNotRated();
+        $data = $movieRepo->filterMyNotRated($q,$offset,$limit,$orderBy);
+        $totale = $movieRepo->countMyNotRated();
 
         return $this->datatable_success_api_response($request, $totale, $data);
 
@@ -171,13 +168,13 @@ class FilmController extends BaseApiController
 
 
     /**
-     * @param Request  $request
-     * @param FilmRepo $filmRepo
+     * @param Request   $request
+     * @param MovieRepo $movieRepo
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function get_dt_noquorum(Request $request, FilmRepo $filmRepo)
+    public function get_dt_noquorum(Request $request, MovieRepo $movieRepo)
     {
 
         $dt_request = $this->datatable_process_request($request);
@@ -204,8 +201,8 @@ class FilmController extends BaseApiController
         }
         $orderBy = "$column $orderDir";
 
-        $data = $filmRepo->filterNoQuorum($q,$offset,$limit,$orderBy);
-        $totale = $filmRepo->countNoQuorum();
+        $data = $movieRepo->filterNoQuorum($q,$offset,$limit,$orderBy);
+        $totale = $movieRepo->countNoQuorum();
 
         return $this->datatable_success_api_response($request, $totale, $data);
 

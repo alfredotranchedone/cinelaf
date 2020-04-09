@@ -12,7 +12,7 @@
             <div class="col-sm-8">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white">
-                        <span>Tutti i Film</span>
+                        <span>Tutti i Movie</span>
                     </div>
 
                     <div class="p-3 border-bottom bg-light">

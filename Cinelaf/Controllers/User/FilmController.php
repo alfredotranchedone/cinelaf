@@ -8,7 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Models\Film;
+use Cinelaf\Models\Movie;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Services\FilmService;
 use Cinelaf\Services\FilmSession;
@@ -79,7 +79,7 @@ class FilmController extends BaseController
     }
 
 
-    public function post_create(Request $request, Upload $uploadService, FilmSession $filmSession, Registi $registiRepo, \Cinelaf\Repositories\Film $filmRepo)
+    public function post_create(Request $request, Upload $uploadService, FilmSession $filmSession, Registi $registiRepo, \Cinelaf\Repositories\Movie $filmRepo)
     {
 
         $this->validate($request,[
@@ -110,18 +110,18 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('home')
-                ->with('msg','Film inserito correttamente!')
+                ->with('msg','Movie inserito correttamente!')
                 ->with('msgType','success');
 
         } catch (\Exception $e) {
 
             DB::rollBack();
 
-            logger()->error('Errore nella creazione del Film',['msg' => $e->getMessage()]);
+            logger()->error('Errore nella creazione del Movie',['msg' => $e->getMessage()]);
 
             return redirect()
                 ->route('film.add')
-                ->with('msg','Errore nella creazione del Film')
+                ->with('msg','Errore nella creazione del Movie')
                 ->with('msgType','danger');
 
         }
@@ -130,7 +130,7 @@ class FilmController extends BaseController
     }
 
 
-    public function get_show(Film $film, FilmService $filmService)
+    public function get_show(Movie $film, FilmService $filmService)
     {
 
         $film->load(['user','regista','rating.user']);

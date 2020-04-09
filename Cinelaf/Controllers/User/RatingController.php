@@ -8,8 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Models\Film;
-use Cinelaf\Models\Rating;
+use Cinelaf\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +18,7 @@ class RatingController extends BaseController
 {
 
 
-    public function get_vota(Film $film)
+    public function get_vota(Movie $film)
     {
 
         $film->load(['rating']);
@@ -33,7 +32,7 @@ class RatingController extends BaseController
     }
 
 
-    public function post_vota(Request $request, Film $film, \Cinelaf\Repositories\Rating $ratingRepo)
+    public function post_vota(Request $request, Movie $film, \Cinelaf\Repositories\Rating $ratingRepo)
     {
 
 
@@ -75,7 +74,7 @@ class RatingController extends BaseController
 
 
 
-    public function delete(Request $request, Film $film, \Cinelaf\Repositories\Rating $ratingRepo)
+    public function delete(Request $request, Movie $film, \Cinelaf\Repositories\Rating $ratingRepo)
     {
 
         $this->validate($request, [

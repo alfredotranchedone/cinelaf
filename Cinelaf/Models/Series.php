@@ -11,7 +11,7 @@ namespace Cinelaf\Models;
 use Cinelaf\Configuration\Configuration;
 use Illuminate\Database\Eloquent\Builder;
 
-class Series extends Film
+class Series extends Movie
 {
 
     protected static function booted()

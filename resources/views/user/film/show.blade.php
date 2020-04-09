@@ -13,7 +13,7 @@
             <div class="col-md-8">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white d-flex justify-content-between">
-                        <span>Scheda Film</span>
+                        <span>Scheda Movie</span>
                         <div>
                             <span class="badge badge-light">
                                 # {{ $film->rank ?? '-' }}

@@ -103,7 +103,7 @@ Route::namespace('\Cinelaf\Controllers\User')
         Route::get('watchlist/{film}/add','WatchlistController@get_add')->name('watchlist.add');
         Route::post('watchlist/remove','WatchlistController@post_remove')->name('watchlist.remove');
 
-        /* Film */
+        /* Movie */
         Route::prefix('u')
             ->name('user.')
             ->group(function () {
@@ -112,7 +112,7 @@ Route::namespace('\Cinelaf\Controllers\User')
 
             });
 
-        /* Film */
+        /* Movie */
         Route::prefix('film')
             ->name('film.')
             ->group(function (){
@@ -139,7 +139,7 @@ Route::namespace('\Cinelaf\Controllers\User')
 
 
 
-        /* Film */
+        /* Movie */
         Route::prefix('series')
             ->name('series.')
             ->group(function (){

@@ -72,7 +72,7 @@
 
                             <div class="alert alert-info">
                                 <i class="fa fa-info-circle fa-fw"></i>
-                                Non hai Film nella watchlist.
+                                Non hai Movie nella watchlist.
                             </div>
 
                         @endforelse

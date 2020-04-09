@@ -97,7 +97,7 @@ class Rating
     public function updateBatchValutazione($limit = null, $offset = null)
     {
 
-        $films = \Cinelaf\Models\Film::with('rating')
+        $films = \Cinelaf\Models\Movie::with('rating')
             ->when($limit, function ($q) use ($limit) {
                 $q->limit($limit);
             })

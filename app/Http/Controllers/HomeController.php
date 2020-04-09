@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Cinelaf\Repositories\Film;
+use Cinelaf\Repositories\Movie;
 use Cinelaf\Repositories\Rating;
 use Cinelaf\Services\FilmService;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Film $filmRepo)
+    public function index(Movie $filmRepo)
     {
         $latestFilm = $filmRepo->getLatestCreated();
         $totalFilm = $filmRepo->count();

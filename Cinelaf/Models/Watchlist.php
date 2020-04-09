@@ -18,7 +18,7 @@ class Watchlist extends Model
     protected $fillable = ['film_id','user_id'];
 
     public function film() {
-        return $this->belongsTo(Film::class);
+        return $this->belongsTo(Movie::class);
     }
 
     public function user() {

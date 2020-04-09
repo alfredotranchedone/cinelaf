@@ -20,7 +20,7 @@ class Regista extends Model
 
     public function films()
     {
-        return $this->belongsToMany(Film::class,'films_registi','regista_id','film_id');
+        return $this->belongsToMany(Movie::class,'films_registi','regista_id','film_id');
     }
 
 

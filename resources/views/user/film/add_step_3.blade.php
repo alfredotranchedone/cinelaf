@@ -11,7 +11,7 @@
                 <div class="card shadow">
 
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <span>Aggiungi Film</span>
+                        <span>Aggiungi Movie</span>
                         <span class="small">Step 3 di 3</span>
                     </div>
 
@@ -33,7 +33,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label for="titolo">Titolo del Film</label>
+                                <label for="titolo">Titolo del Movie</label>
                                 <input type="text"
                                        class="form-control-plaintext form-control-lg "
                                        name="titolo"
@@ -81,7 +81,7 @@
                             <div class="pt-2 pb-3 text-center">
                                 <hr>
                                 <button type="submit" class="btn btn-primary btn-lg mt-3">
-                                    Salva Film
+                                    Salva Movie
                                 </button>
                             </div>
 

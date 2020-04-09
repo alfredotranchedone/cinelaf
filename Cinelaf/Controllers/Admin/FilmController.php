@@ -9,7 +9,7 @@ namespace Cinelaf\Controllers\Admin;
 
 
 use App\User;
-use Cinelaf\Models\Film;
+use Cinelaf\Models\Movie;
 use Cinelaf\Repositories\Rating;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Repositories\Watchlist;
@@ -27,7 +27,7 @@ class FilmController extends BaseController
     use Redirectable;
 
 
-    public function get_edit(Film $film)
+    public function get_edit(Movie $film)
     {
 
         return view('admin.film.edit', compact(
@@ -36,7 +36,7 @@ class FilmController extends BaseController
 
     }
 
-    public function put_update(Request $request, Film $film)
+    public function put_update(Request $request, Movie $film)
     {
 
         $this->validate($request,[
@@ -77,7 +77,7 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('film.show',[$film])
-                ->with('success','Film modificato!');
+                ->with('success','Movie modificato!');
 
         } catch (\Exception $e) {
 
@@ -90,7 +90,7 @@ class FilmController extends BaseController
     }
 
 
-    public function delete(Registi $registiRepo, Rating $ratingRepo, Upload $uploadService, Watchlist $watchlistRepo, Film $film)
+    public function delete(Registi $registiRepo, Rating $ratingRepo, Upload $uploadService, Watchlist $watchlistRepo, Movie $film)
     {
         try {
 
@@ -106,12 +106,12 @@ class FilmController extends BaseController
             // Watchlist
             $watchlistRepo->removeFilmFromWatchlists($film->id);
 
-            // Film
+            // Movie
             $film->delete();
 
             return redirect()
                 ->route('admin.dashboard')
-                ->with('success','Film eliminato!');
+                ->with('success','Movie eliminato!');
 
         } catch (\Exception $e) {
 
@@ -122,7 +122,7 @@ class FilmController extends BaseController
     }
 
 
-    public function forceDelete(Request $request, \Cinelaf\Repositories\Film $filmRepo)
+    public function forceDelete(Request $request, \Cinelaf\Repositories\Movie $filmRepo)
     {
 
         try {
@@ -131,7 +131,7 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('admin.dashboard')
-                ->with('success','Film rimosso definitivamente dall\'archivio!');
+                ->with('success','Movie rimosso definitivamente dall\'archivio!');
 
         } catch (\Exception $e) {
 

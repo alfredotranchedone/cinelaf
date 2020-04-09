@@ -13,7 +13,7 @@
                 <div class="card shadow">
 
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <span>Aggiungi Film</span>
+                        <span>Aggiungi Movie</span>
                         <span class="small">Step 2 di 3</span>
                     </div>
 
@@ -35,7 +35,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label for="titolo">Titolo del Film</label>
+                                <label for="titolo">Titolo del Movie</label>
                                 <input type="text"
                                        class="form-control-plaintext form-control-lg {{ $errors->has('titolo') ? 'is-invalid' : '' }}"
                                        name="titolo"

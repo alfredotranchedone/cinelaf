@@ -8,7 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Models\Film;
+use Cinelaf\Models\Movie;
 use Cinelaf\Logger\Logger;
 use Cinelaf\Repositories\Watchlist;
 use Cinelaf\Traits\Redirectable;
@@ -30,7 +30,7 @@ class WatchlistController extends BaseController
     }
 
 
-    public function get_add(Watchlist $watchlistRepo, Film $film)
+    public function get_add(Watchlist $watchlistRepo, Movie $film)
     {
 
         try {
@@ -39,7 +39,7 @@ class WatchlistController extends BaseController
 
             return redirect()
                 ->route('film.show',[$film->id])
-                ->with('success','Film Aggiunto alla Watchlist');
+                ->with('success','Movie Aggiunto alla Watchlist');
 
         } catch (\Exception $e) {
             Logger::error($e);
@@ -71,7 +71,7 @@ class WatchlistController extends BaseController
 
             return redirect()
                 ->to(url()->previous())
-                ->with('success','Film rimosso dalla Watchlist');
+                ->with('success','Movie rimosso dalla Watchlist');
 
         } catch (\Exception $e) {
             Logger::error($e);

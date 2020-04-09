@@ -8,7 +8,7 @@
 namespace Cinelaf\Services;
 
 
-use Cinelaf\Models\Film;
+use Cinelaf\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -52,12 +52,12 @@ class Upload
 
     /**
      * @param Request $request
-     * @param Film    $film
+     * @param Movie   $film
      *
      * @return mixed|string
      * @throws \Exception
      */
-    public function updateLocandina(Request $request, Film $film)
+    public function updateLocandina(Request $request, Movie $film)
     {
 
         $locandina = $film->locandina;
@@ -86,12 +86,12 @@ class Upload
 
 
     /**
-     * @param Film $film
+     * @param Movie $film
      *
      * @return bool
      * @throws \Exception
      */
-    public function removeLocandina(Film $film)
+    public function removeLocandina(Movie $film)
     {
 
         try {
