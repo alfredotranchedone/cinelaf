@@ -41,7 +41,7 @@
                     <div class="card-body p-3 d-flex flex-column align-items-center">
 
                         <h1>{{ $filmTotale }}</h1>
-                        <div class="text-secondary">Totale Film</div>
+                        <div class="text-secondary">Totale Movie</div>
 
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="card-body p-3 d-flex flex-column align-items-center">
 
                         <h1>{{ $filmNonVotatiTotale }}</h1>
-                        <div class="text-secondary">Film Non Votati</div>
+                        <div class="text-secondary">Movie Non Votati</div>
 
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                             <div class="list-group-item">
                                 <h4>Aggiorna Valutazioni</h4>
                                 <p>
-                                    Se trovi discrepanze tra la valutazione nella Scheda del Film
+                                    Se trovi discrepanze tra la valutazione nella Scheda del Movie
                                     e quella nelle classifiche, forza l'aggiornamento delle valutazioni.
                                 </p>
                                 <div class="alert alert-info mb-3">
@@ -120,7 +120,7 @@
 
 
                             <div class="list-group-item">
-                                <h4>Cestino Film</h4>
+                                <h4>Cestino Movie</h4>
                                 <p>
                                     Elenco delle schede film cestinate ma non ancora eliminate.
                                 </p>
@@ -154,7 +154,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Cestino Film</h4>
+                    <h4 class="modal-title">Cestino Movie</h4>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">

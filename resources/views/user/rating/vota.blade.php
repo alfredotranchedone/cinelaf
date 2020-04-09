@@ -14,7 +14,7 @@
 
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white">
-                        <span>Vota il Film</span>
+                        <span>Vota il Movie</span>
                     </div>
 
                     <div class="card-body">

@@ -17,6 +17,7 @@ class FilmSession
     private $regista;
     private $anno;
     private $locandina;
+    private $type;
 
 
 
@@ -37,6 +38,7 @@ class FilmSession
         $this->regista = $currentFilm['regista'];
         $this->anno = $currentFilm['anno'];
         $this->locandina = $currentFilm['locandina'];
+        $this->type = $currentFilm['type'];
 
     }
 
@@ -58,6 +60,7 @@ class FilmSession
             'regista' => $this->regista,
             'anno' => $this->anno,
             'locandina' => $this->locandina,
+            'type' => $this->type,
             'user_id' => auth()->user()->id
         ];
         
@@ -106,7 +109,6 @@ class FilmSession
     {
         $this->regista = $regista;
         return $this;
-
     }
 
 
@@ -131,7 +133,18 @@ class FilmSession
     {
         $this->locandina = $locandina;
         return $this;
+    }
 
+
+    /**
+     * @param $type
+     *
+     * @return FilmSession
+     */
+    public function setType($type): FilmSession
+    {
+        $this->type = $type;
+        return $this;
     }
 
 

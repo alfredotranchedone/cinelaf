@@ -34,14 +34,28 @@
                         <form action="{{ route('film.add.step_3') }}" method="post">
                             @csrf
 
+
                             <div class="form-group">
-                                <label for="titolo">Titolo del Film</label>
+                                <label for="titolo">Titolo del Movie</label>
                                 <input type="text"
                                        class="form-control-plaintext form-control-lg {{ $errors->has('titolo') ? 'is-invalid' : '' }}"
                                        name="titolo"
                                        id="titolo"
                                        readonly
                                        value="{{ session( config('cinelaf.sessions_key.film.new') )['titolo'] }}">
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="type">Tipologia</label>
+                                <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}"
+                                        name="type"
+                                        required
+                                        id="type">
+                                    <option value="" disabled selected>Seleziona...</option>
+                                    <option value="{{ \Cinelaf\Configuration\Configuration::TYPE_MOVIE }}">{{ __('Movies') }}</option>
+                                    <option value="{{ \Cinelaf\Configuration\Configuration::TYPE_SERIES }}">{{ __('Series') }}</option>
+                                </select>
                             </div>
 
 

@@ -12,14 +12,14 @@
             <div class="col-sm-8">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white">
-                        <span>I Film Da Votare</span>
+                        <span>I Movie Da Votare</span>
                     </div>
 
                     <div class="card-body">
 
                         <div class="table-responsive">
                             <table class="table table-striped dataTableFilm"
-                                   data-ajax="{{ route('api.film.dt.mynotrated') }}">
+                                   data-ajax="{{ $dataAjaxUrl }}">
                                 <thead>
                                 <tr>
                                     <th style="width: 75px"></th>
@@ -77,7 +77,7 @@
                                             row.titolo +
                                         '</div>' +
                                         '<a class="btn btn-link pl-0 mt-2 mb-3" href="'+ BASE_URL +'/film/'+ row.id +'">' +
-                                            'Vai a Scheda Film <i class="fa fa-angle-right fa-fw"></i>' +
+                                            'Vai a Scheda Movie <i class="fa fa-angle-right fa-fw"></i>' +
                                         '</a>' +
                                         '<div class="input-group">' +
                                             '<select class="custom-select" data-film-titolo="'+ row.titolo +'" data-film-id="'+ row.id +'" style="max-width: 150px;">' +
@@ -138,7 +138,7 @@
                     $this.attr('disabled',true);
                     $select.attr('disabled',true);
 
-                    alert('Voto registrato correttamente.','Vota Film')
+                    alert('Voto registrato correttamente.','Vota Movie')
 
                 })
                 .catch(e => {

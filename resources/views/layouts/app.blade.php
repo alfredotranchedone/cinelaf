@@ -53,14 +53,21 @@
                         <li class="nav-item {{ (request()->is('film/add*')) ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('film.add') }}">
                                 <i class="fa fa-plus-circle fa-fw"></i>
-                                Aggiungi Film
+                                {{ __('Add') }}
                             </a>
                         </li>
 
                         <li class="nav-item {{ (request()->is('film')) ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('film.index') }}">
-                                <i class="fa fa-list-alt fa-fw"></i>
-                                Elenco Film
+                                <i class="fas fa-film fa-fw"></i>
+                                {{ __('Movies') }}
+                            </a>
+                        </li>
+
+                        <li class="nav-item {{ (request()->is('series*')) ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('series.index') }}">
+                                <i class="fas fa-tv fa-fw"></i>
+                                {{ __('Series') }}
                             </a>
                         </li>
 
@@ -83,7 +90,7 @@
                             <li class="nav-item {{ (request()->is('admin*')) ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                     <i class="fa fa-shield-alt fa-fw"></i>
-                                    Amministrazione
+                                    {{ __('Administration') }}
                                 </a>
                             </li>
                         @endif
@@ -91,7 +98,7 @@
                         <li class="nav-item {{ (request()->is('me*')) ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('me') }}">
                                 <i class="fa fa-user fa-fw"></i>
-                                Profilo
+                                {{ __('Profile') }}
                             </a>
                         </li>
 

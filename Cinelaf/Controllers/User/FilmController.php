@@ -8,7 +8,8 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
+use Cinelaf\Models\Movie;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Services\FilmService;
 use Cinelaf\Services\FilmSession;
@@ -20,6 +21,19 @@ use Illuminate\Support\Facades\DB;
 class FilmController extends BaseController
 {
 
+
+
+
+    public function get_index()
+    {
+
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.all');
+
+        return view('user.film.index', $viewPar
+        );
+
+    }
 
 
     public function get_add(FilmSession $filmSession)
@@ -54,16 +68,19 @@ class FilmController extends BaseController
             return redirect()->route('film.add.step_2');
 
         $regista = $request->regista;
+        $type = $request->type;
 
         $fs = $filmSession
             ->setRegista($regista)
+            ->setType($type)
             ->save();
 
         $titolo = $fs['titolo'];
+        $type = $fs['type'];
         $regista_string = $registiRepo->getNominativoFromId($regista,true);
 
         return view('user.film.add_step_3', compact(
-            'regista_string','titolo'
+            'regista_string','titolo','type'
         ));
 
     }
@@ -88,7 +105,7 @@ class FilmController extends BaseController
             $fileNameToStore = $uploadService->locandina($request);
 
             // Salva film
-            $film = $filmRepo->save($currentFilm['titolo'], $request->anno, $fileNameToStore);
+            $film = $filmRepo->save($currentFilm['titolo'], $request->anno, $fileNameToStore, $currentFilm['type']);
 
             // Salva regista
             $registiRepo->attachRegistaToFilm($currentFilm['regista'], $film->id);
@@ -100,34 +117,22 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('home')
-                ->with('msg','Film inserito correttamente!')
+                ->with('msg','Movie inserito correttamente!')
                 ->with('msgType','success');
 
         } catch (\Exception $e) {
 
             DB::rollBack();
 
-            logger()->error('Errore nella creazione del Film',['msg' => $e->getMessage()]);
+            logger()->error('Errore nella creazione del Movie',['msg' => $e->getMessage()]);
 
             return redirect()
                 ->route('film.add')
-                ->with('msg','Errore nella creazione del Film')
+                ->with('msg','Errore nella creazione del Movie')
                 ->with('msgType','danger');
 
         }
 
-
-    }
-
-
-    public function get_index()
-    {
-
-        $film = DB::table('films')->orderBy('titolo')->paginate(25);
-
-        return view('user.film.index', compact(
-            'film'
-        ));
 
     }
 
@@ -141,6 +146,7 @@ class FilmController extends BaseController
         }]);
 
         $rating = $film->rating;
+
         $valutazione = $filmService->valutazione($rating);
 
         return view('user.film.show', compact(
@@ -152,14 +158,19 @@ class FilmController extends BaseController
     public function get_my_ratings()
     {
 
-        return view('user.film.myratings');
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.myratings');
+
+        return view('user.film.myratings', $viewPar);
 
     }
 
     public function get_my_not_rated()
     {
 
-        return view('user.film.mynotrated');
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.mynotrated');
+        return view('user.film.mynotrated', $viewPar);
 
     }
 
@@ -167,8 +178,23 @@ class FilmController extends BaseController
     public function get_no_quorum()
     {
 
-        return view('user.film.noquorum');
+        $viewPar = $this->routeVar();
+        $viewPar['dataAjaxUrl'] = route('api.film.dt.noquorum');
+        return view('user.film.noquorum', $viewPar);
 
     }
+
+
+
+    private function routeVar(){
+
+        $routeMyRating = route('film.myratings');
+        $routeMyNotRated = route('film.mynotrated');
+        $routeNoQuorum = route('film.noquorum');
+
+        return compact('routeMyRating','routeNoQuorum','routeMyNotRated');
+
+    }
+
     
 }

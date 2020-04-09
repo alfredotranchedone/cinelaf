@@ -9,9 +9,7 @@ namespace Cinelaf\Models;
 
 
 use App\User;
-use Cinelaf\Film;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Rating extends Model
 {
@@ -19,7 +17,7 @@ class Rating extends Model
     protected $table = 'ratings';
 
     public function film() {
-        return $this->belongsTo(Film::class);
+        return $this->belongsTo(Film::class,'film_id');
     }
 
     public function user() {

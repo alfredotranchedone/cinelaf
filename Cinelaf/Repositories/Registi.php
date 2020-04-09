@@ -9,7 +9,6 @@ namespace Cinelaf\Repositories;
 
 
 use Cinelaf\Models\Regista;
-use Cinelaf\Resources\FilmSelectResource;
 use Cinelaf\Resources\RegistiSelectResource;
 use Illuminate\Support\Facades\DB;
 

@@ -9,7 +9,7 @@
 <div>
     <span class="badge badge-light p-2 mb-2">
         <i class="fa fa-heart fa-fw text-danger"></i>
-        Il Film è nella tua Watchlist
+        Il Movie è nella tua Watchlist
     </span>
 </div>
 <div class="ml-3 ml-sm-0 text-center text-sm-left">

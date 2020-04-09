@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cinelaf\Controllers\User;
 
 use Cinelaf\Repositories\Film;
+use Cinelaf\Repositories\Movie;
 use Cinelaf\Repositories\Rating;
 use Cinelaf\Services\FilmService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class HomeController extends Controller
+class HomeController extends BaseController
 {
     /**
      * Create a new controller instance.

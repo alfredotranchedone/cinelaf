@@ -26,17 +26,17 @@
 
                         <div class="d-flex flex-even justify-content-center align-items-baseline">
                             <h1 class="mb-0 mr-2 font-weight-bold">{{ $totalFilm }}</h1>
-                            <div class="text-secondary">film presenti</div>
+                            <div class="text-secondary">titoli presenti</div>
                         </div>
 
                         <div class="d-flex flex-even justify-content-center align-items-baseline no-border-sm border-left border-right">
                             <h1 class="mb-0 mr-2 font-weight-bold">{{ $myRatingCount }}</h1>
-                            <div class="text-secondary">film valutati</div>
+                            <div class="text-secondary">titoli valutati</div>
                         </div>
 
                         <div class="d-flex flex-even justify-content-center align-items-baseline">
                             <h1 class="mb-0 mr-2 font-weight-bold">{{ ($totalFilm - $myRatingCount) }}</h1>
-                            <div class="text-secondary">film da valutare</div>
+                            <div class="text-secondary">titoli da valutare</div>
                         </div>
 
                     </div>
@@ -60,7 +60,7 @@
                             I film che hai valutato
                         </p>
                         <a href="{{ route('film.myratings') }}" class="btn btn-primary btn-block mt-auto">
-                            Mostra i Film Valutati
+                            Mostra i Movie Valutati
                             <i class="fa fa-angle-right fa-fw"></i>
                         </a>
                     </div>
@@ -95,11 +95,11 @@
                     <div class="card-body d-flex flex-column justify-content-center align-items-center">
                         <h4 class="card-title text-indigo">
                             <i class="far fa-edit fa-fw"></i>
-                            Inserisci Film
+                            Inserisci Movie
                         </h4>
                         <p class="card-text py-2 text-center">Aggiungi un nuovo film</p>
                         <a href="{{ route('film.add') }}" class="btn btn-primary btn-block mt-auto">
-                            Aggiungi Film
+                            Aggiungi Movie
                             <i class="fa fa-angle-right fa-fw"></i> </a>
                     </div>
                 </div>
@@ -110,13 +110,13 @@
                     <div class="card-body d-flex flex-column justify-content-center align-items-center">
                         <h4 class="card-title text-indigo">
                             <i class="far fa-list-alt fa-fw"></i>
-                            Tutti i Film
+                            Tutti i Movie
                         </h4>
                         <p class="card-text py-2 text-center">
                             Tutti i film presenti nel sistema
                         </p>
                         <a href="{{ route('film.index') }}" class="btn btn-primary btn-block mt-auto">
-                            Mostra Tutti i Film
+                            Mostra Tutti i Movie
                             <i class="fa fa-angle-right fa-fw"></i>
                         </a>
                     </div>
@@ -197,7 +197,7 @@
                     </div>
                     <div class="card-footer">
                         <a href="{{ route('film.index') }}" class="btn btn-primary btn-block mt-auto">
-                            Mostra Tutti i Film
+                            Mostra Tutti i Movie
                             <i class="fa fa-angle-right fa-fw"></i>
                         </a>
                     </div>
