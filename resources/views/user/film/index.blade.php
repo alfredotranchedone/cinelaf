@@ -11,24 +11,29 @@
 
             <div class="col-sm-8">
                 <div class="card shadow">
+
                     <div class="card-header bg-dark text-white">
-                        <span>Tutti i Film</span>
+                        @if(request()->is('series'))
+                            <span>Tutte le Serie</span>
+                        @else
+                            <span>Tutti i Film</span>
+                        @endif
                     </div>
 
                     <div class="p-3 border-bottom bg-light">
 
-                            <a class="btn btn-primary btn-sm mr-2"  href="{{ route('film.myratings') }}">
-                                <i class="fa fa-check-circle fa-fw"></i>
-                                Votati
-                            </a>
-                            <a class="btn btn-primary btn-sm mr-2" href="{{ route('film.mynotrated') }}">
-                                <i class="fa fa-star fa-fw"></i>
-                                Da Votare
-                            </a>
-                            <a class="btn btn-primary btn-sm mt-2 mt-sm-0" href="{{ route('film.noquorum') }}">
-                                <i class="fa fa-ban fa-fw"></i>
-                                Senza Quorum
-                            </a>
+                        <a class="btn btn-primary btn-sm mr-2" href="{{ $routeMyRating }}">
+                            <i class="fa fa-check-circle fa-fw"></i>
+                            Votati
+                        </a>
+                        <a class="btn btn-primary btn-sm mr-2" href="{{ $routeMyNotRated }}">
+                            <i class="fa fa-star fa-fw"></i>
+                            Da Votare
+                        </a>
+                        <a class="btn btn-primary btn-sm mt-2 mt-sm-0" href="{{ $routeNoQuorum }}">
+                            <i class="fa fa-ban fa-fw"></i>
+                            Senza Quorum
+                        </a>
 
                     </div>
 
@@ -36,7 +41,7 @@
 
                         <div class="table-responsive">
                             <table id="tblFilm" class="table dataTableFilm table-striped"
-                                   data-ajax="{{ route('api.film.dt.all') }}">
+                                   data-ajax="{{ $dataAjaxUrl ?? route('api.film.dt.all') }}">
                                 <thead>
                                 <tr>
                                     <th style="width: 75px"></th>
@@ -73,10 +78,10 @@
             let watchlist = [];
             let $watchlistCounter = $('#headerWatchlistCounter');
 
-            let watchlistLoad = function(){
+            let watchlistLoad = function () {
                 window.axios
                     .get(BASE_URL + '/api/watchlist/get')
-                    .then( r => {
+                    .then(r => {
                         watchlist = r.data.data;
                     })
                     .catch(e => {
@@ -90,24 +95,24 @@
             };
 
 
-            let renderWatchlist = function(type,filmId){
+            let renderWatchlist = function (type, filmId) {
 
                 $watchlistCounter.text(watchlist.length);
 
                 let _template = '';
                 switch (type) {
                     case 'added':
-                        _template ='<div>' +
-                        '   <button data-film-id="'+ filmId +'" class="remove-from-watchlist btn btn-success btn-sm">' +
-                        '       <i class="fa fa-heart"></i> ' +
-                        '       <i class="fa fa-check"></i> ' +
-                        '   </button>' +
-                        '</div>';
+                        _template = '<div>' +
+                            '   <button data-film-id="' + filmId + '" class="remove-from-watchlist btn btn-success btn-sm">' +
+                            '       <i class="fa fa-heart"></i> ' +
+                            '       <i class="fa fa-check"></i> ' +
+                            '   </button>' +
+                            '</div>';
                         break;
                     case 'notAdded':
                     default:
-                        _template ='<div>' +
-                            '   <button data-film-id="'+ filmId +'" class="add-to-watchlist btn btn-primary btn-sm">' +
+                        _template = '<div>' +
+                            '   <button data-film-id="' + filmId + '" class="add-to-watchlist btn btn-primary btn-sm">' +
                             '       <i class="fa fa-heart"></i> ' +
                             '       <i class="fa fa-plus"></i> ' +
                             '   </button>' +
@@ -130,7 +135,7 @@
                         orderable: false,
                         render: function (data, type, row, meta) {
                             let _img = data ? data : 'placeholder.jpg';
-                            let _html = '<a href="'+ BASE_URL +'/film/'+ row.id +'">';
+                            let _html = '<a href="' + BASE_URL + '/film/' + row.id + '">';
                             _html += '<img src="' + BASE_URL + '/img/locandina/' + _img + '" class="img-thumbnail" width="75" />';
                             _html += '</a>';
                             return _html;
@@ -146,8 +151,8 @@
                                 regista.push(item.nome + ' ' + item.cognome);
                             });
 
-                            let _html = '<a href="'+ BASE_URL +'/film/'+ row.id +'">'+ data +'</a>';
-                            _html += '<div class="small">'+ _.join(regista, ', ') +'</div>';
+                            let _html = '<a href="' + BASE_URL + '/film/' + row.id + '">' + data + '</a>';
+                            _html += '<div class="small">' + _.join(regista, ', ') + '</div>';
                             return _html;
                         }
                     },
@@ -167,13 +172,13 @@
                             let inList = false;
                             let _type = 'notAdded';
                             _.each(watchlist, function (item) {
-                               if(item.film_id === data){
-                                   inList = true;
-                                   return false;
-                               }
+                                if (item.film_id === data) {
+                                    inList = true;
+                                    return false;
+                                }
                             });
 
-                            if(inList)
+                            if (inList)
                                 _type = 'added';
 
                             return renderWatchlist(_type, data);
@@ -191,13 +196,13 @@
             watchlistLoad();
 
             /* Events */
-            $('#tblFilm').on('click','.add-to-watchlist',function (evt) {
+            $('#tblFilm').on('click', '.add-to-watchlist', function (evt) {
 
                 let $this = $(evt.currentTarget);
                 let filmId = $this.data('filmId');
 
                 window.axios
-                    .post(BASE_URL + '/api/watchlist/add',{
+                    .post(BASE_URL + '/api/watchlist/add', {
                         filmId: filmId
                     })
                     .then(r => {
@@ -208,7 +213,7 @@
                             .parent('div')
                             .parent('td')
                             .empty()
-                            .html( renderWatchlist('added',filmId) );
+                            .html(renderWatchlist('added', filmId));
 
                     })
                     .catch(e => {
@@ -219,14 +224,13 @@
             });
 
 
-
-            $('#tblFilm').on('click','.remove-from-watchlist',function (evt) {
+            $('#tblFilm').on('click', '.remove-from-watchlist', function (evt) {
 
                 let $this = $(evt.currentTarget);
                 let filmId = $this.data('filmId');
 
                 window.axios
-                    .post(BASE_URL + '/api/watchlist/remove',{
+                    .post(BASE_URL + '/api/watchlist/remove', {
                         filmId: filmId
                     })
                     .then(r => {
@@ -237,7 +241,7 @@
                             .parent('div')
                             .parent('td')
                             .empty()
-                            .html( renderWatchlist('notAdded',filmId) );
+                            .html(renderWatchlist('notAdded', filmId));
 
                     })
                     .catch(e => {

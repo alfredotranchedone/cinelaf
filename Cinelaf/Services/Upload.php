@@ -8,7 +8,7 @@
 namespace Cinelaf\Services;
 
 
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -52,7 +52,7 @@ class Upload
 
     /**
      * @param Request $request
-     * @param Film    $film
+     * @param Film   $film
      *
      * @return mixed|string
      * @throws \Exception

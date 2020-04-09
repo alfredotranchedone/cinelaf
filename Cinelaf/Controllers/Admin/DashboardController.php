@@ -9,13 +9,13 @@ namespace Cinelaf\Controllers\Admin;
 
 
 use App\User;
-use Cinelaf\Repositories\Film;
+use Cinelaf\Repositories\Movie;
 use Cinelaf\Repositories\Registi;
 
 class DashboardController extends BaseController
 {
 
-    public function get_index(Film $filmRepo, Registi $registiRepo)
+    public function get_index(Movie $filmRepo, Registi $registiRepo)
     {
 
         $filmTotale = $filmRepo->count();

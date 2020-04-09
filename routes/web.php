@@ -24,7 +24,7 @@ Route::get('/register', function () {
     return redirect('/login');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', '\Cinelaf\Controllers\User\HomeController@index')->name('home');
 
 /* Internal API Rest */
 Route::namespace('\Cinelaf\Controllers\Api')
@@ -47,6 +47,7 @@ Route::namespace('\Cinelaf\Controllers\Api')
                     });
 
 
+                /* TODO rename/refactor to "movie"? */
                 Route::prefix('film')
                     ->name('film.')
                     ->group(function (){
@@ -58,6 +59,21 @@ Route::namespace('\Cinelaf\Controllers\Api')
                         Route::any('/dt/noquorum','FilmController@get_dt_noquorum')->name('dt.noquorum');
 
                     });
+
+
+
+                Route::prefix('series')
+                    ->name('series.')
+                    ->group(function (){
+
+                        Route::get('/','SeriesController@get_all')->name('all');
+                        Route::any('/dt','SeriesController@get_dt_all')->name('dt.all');
+                        Route::any('/dt/myratings','SeriesController@get_dt_myratings')->name('dt.myratings');
+                        Route::any('/dt/mynotrated','SeriesController@get_dt_mynotrated')->name('dt.mynotrated');
+                        Route::any('/dt/noquorum','SeriesController@get_dt_noquorum')->name('dt.noquorum');
+
+                    });
+
 
                 Route::prefix('registi')
                     ->name('registi.')
@@ -102,7 +118,7 @@ Route::namespace('\Cinelaf\Controllers\User')
         Route::get('watchlist/{film}/add','WatchlistController@get_add')->name('watchlist.add');
         Route::post('watchlist/remove','WatchlistController@post_remove')->name('watchlist.remove');
 
-        /* Film */
+        /* User */
         Route::prefix('u')
             ->name('user.')
             ->group(function () {
@@ -111,7 +127,7 @@ Route::namespace('\Cinelaf\Controllers\User')
 
             });
 
-        /* Film */
+        /* Film TODO rename to Movie?? */
         Route::prefix('film')
             ->name('film.')
             ->group(function (){
@@ -133,6 +149,22 @@ Route::namespace('\Cinelaf\Controllers\User')
                 Route::get('/{film}/vota','RatingController@get_vota')->name('vota');
                 Route::post('/{film}/vota','RatingController@post_vota')->name('vota.save');
                 Route::delete('/{film}/vota/delete','RatingController@delete')->name('vota.delete');
+
+            });
+
+
+
+        /* Series */
+        Route::prefix('series')
+            ->name('series.')
+            ->group(function (){
+
+                Route::get('/','SeriesController@get_index')->name('index');
+
+                Route::get('my-ratings','SeriesController@get_my_ratings')->name('myratings');
+                Route::get('my-not-rated','SeriesController@get_my_not_rated')->name('mynotrated');
+                Route::get('no-quorum','SeriesController@get_no_quorum')->name('noquorum');
+
 
             });
 

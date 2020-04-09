@@ -8,7 +8,7 @@
             <div class="col-sm-8">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <span>Modifica Film</span>
+                        <span>Modifica Movie</span>
                     </div>
 
                     <div class="p-3 border-bottom">
@@ -128,7 +128,7 @@
                             @method('delete')
                             <button type="submit" class="btn btn-danger btn-sm">
                                 <i class="fa fa-user-plus fa-fw"></i>
-                                Elimina Film
+                                Elimina Movie
                             </button>
                         </form>
                     </div>

@@ -8,8 +8,6 @@
 namespace Cinelaf\Controllers\User;
 
 
-use Cinelaf\Film;
-use Cinelaf\Models\Regista;
 use Cinelaf\Repositories\Registi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -60,7 +58,7 @@ class RegistiController extends BaseController
 
             return redirect()
                 ->back()
-                ->with('msg','Errore nella creazione del Film')
+                ->with('msg','Errore nella creazione del Movie')
                 ->with('msgType','danger');
 
         }

@@ -9,10 +9,8 @@ namespace Cinelaf\Controllers\Api;
 
 
 use Cinelaf\Logger\Logger;
-use Cinelaf\Models\Rating;
 use Cinelaf\Repositories\Watchlist;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class WatchlistController extends BaseApiController

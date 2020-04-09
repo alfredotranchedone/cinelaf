@@ -8,8 +8,7 @@
 namespace Cinelaf\Controllers\Admin;
 
 
-use App\User;
-use Cinelaf\Film;
+use Cinelaf\Models\Film;
 use Cinelaf\Repositories\Rating;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Repositories\Watchlist;
@@ -17,8 +16,6 @@ use Cinelaf\Services\Upload;
 use Cinelaf\Traits\Redirectable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class FilmController extends BaseController
@@ -77,7 +74,7 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('film.show',[$film])
-                ->with('success','Film modificato!');
+                ->with('success','Movie modificato!');
 
         } catch (\Exception $e) {
 
@@ -106,12 +103,12 @@ class FilmController extends BaseController
             // Watchlist
             $watchlistRepo->removeFilmFromWatchlists($film->id);
 
-            // Film
+            // Movie
             $film->delete();
 
             return redirect()
                 ->route('admin.dashboard')
-                ->with('success','Film eliminato!');
+                ->with('success','Movie eliminato!');
 
         } catch (\Exception $e) {
 
@@ -131,7 +128,7 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('admin.dashboard')
-                ->with('success','Film rimosso definitivamente dall\'archivio!');
+                ->with('success','Movie rimosso definitivamente dall\'archivio!');
 
         } catch (\Exception $e) {
 

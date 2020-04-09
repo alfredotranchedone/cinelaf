@@ -7,8 +7,6 @@
 
 namespace Cinelaf\Repositories;
 
-
-use Cinelaf\Services\FilmService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -99,7 +97,7 @@ class Rating
     public function updateBatchValutazione($limit = null, $offset = null)
     {
 
-        $films = \Cinelaf\Film::with('rating')
+        $films = \Cinelaf\Models\Film::with('rating')
             ->when($limit, function ($q) use ($limit) {
                 $q->limit($limit);
             })

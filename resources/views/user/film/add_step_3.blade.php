@@ -33,7 +33,7 @@
                             @csrf
 
                             <div class="form-group">
-                                <label for="titolo">Titolo del Film</label>
+                                <label for="titolo">Titolo del Movie</label>
                                 <input type="text"
                                        class="form-control-plaintext form-control-lg "
                                        name="titolo"
@@ -51,6 +51,24 @@
                                        id="regista"
                                        readonly
                                        value="{{ $regista_string }}">
+                            </div>
+
+
+                            @php
+                                if($type == \Cinelaf\Configuration\Configuration::TYPE_MOVIE){
+                                    $label = __('Movies');
+                                } elseif ($type == \Cinelaf\Configuration\Configuration::TYPE_SERIES){
+                                    $label = __('Series');
+                                }
+                            @endphp
+                            <div class="form-group">
+                                <label for="regista">Tipologia</label>
+                                <input type="text"
+                                       class="form-control-plaintext form-control-lg "
+                                       name="type"
+                                       id="type"
+                                       readonly
+                                       value="{{ $label }}">
                             </div>
 
 
@@ -81,7 +99,7 @@
                             <div class="pt-2 pb-3 text-center">
                                 <hr>
                                 <button type="submit" class="btn btn-primary btn-lg mt-3">
-                                    Salva Film
+                                    Salva Movie
                                 </button>
                             </div>
 

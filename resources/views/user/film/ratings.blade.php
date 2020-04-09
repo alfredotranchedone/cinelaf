@@ -25,7 +25,7 @@
                         <div class="list-group list-group-flush">
 
                             <div class="list-group-item d-flex bg-light">
-                                <div class="flex-even font-weight-bold">Film</div>
+                                <div class="flex-even font-weight-bold">Movie</div>
                                 <div class="flex-even font-weight-bold text-center">Voto</div>
                                 <div class="flex-even font-weight-bold text-right">Data Voto</div>
                             </div>

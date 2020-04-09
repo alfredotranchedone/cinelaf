@@ -12,7 +12,7 @@
             <div class="col-sm-8">
                 <div class="card shadow">
                     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                        <span>Aggiungi Film</span>
+                        <span>Aggiungi Movie</span>
                         <span class="small">Step 1 di 3</span>
                     </div>
 
@@ -35,11 +35,11 @@
 
                             <div class="alert alert-info small">
                                 <i class="fa fa-info-circle fa-fw mr-2"></i>
-                                Prima di inserire un nuovo Film, controlla che non sia già presente in archivio
+                                Prima di inserire un nuovo Movie, controlla che non sia già presente in archivio
                             </div>
 
                             <label for="titolo">
-                                <span>Titolo del Film <span id="resultCount"></span></span>
+                                <span>Titolo del Movie <span id="resultCount"></span></span>
                                 <span id="loading" class="spinner-border spinner-border-sm ml-1" style="display: none;"></span>
                             </label>
                             <div class="input-group input-group-lg">
@@ -84,7 +84,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Film esistente</h4>
+                    <h4 class="modal-title">Movie esistente</h4>
                 </div>
                 <div class="modal-body">
                     Vuoi proseguire con l'inserimento del film?
