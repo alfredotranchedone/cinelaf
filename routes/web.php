@@ -93,6 +93,18 @@ Route::namespace('\Cinelaf\Controllers\Api')
 
                     });
 
+
+                /* Algolia Search */
+                Route::prefix('search')
+                    ->name('search.')
+                    ->group(function (){
+
+                        Route::post('/','SearchController@post_search')->name('algolia');
+
+                    });
+
+
+
             });
 
 

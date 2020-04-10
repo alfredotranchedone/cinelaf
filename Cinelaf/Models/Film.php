@@ -12,6 +12,7 @@ use App\User;
 use Cinelaf\Configuration\Configuration;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 
 /**
@@ -25,7 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Film extends Model
 {
 
-    use SoftDeletes;
+    use SoftDeletes, Searchable;
 
     protected $table = 'films';
 
@@ -70,6 +71,14 @@ class Film extends Model
     public function isSeries()
     {
         return $this->type === Configuration::TYPE_SERIES;
+    }
+
+
+    /* Scout / Algolia */
+    public function toSearchableArray()
+    {
+        $array = $this->only('titolo');
+        return array_merge($array, $registi);
     }
 
 }
