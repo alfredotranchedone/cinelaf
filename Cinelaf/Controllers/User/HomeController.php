@@ -31,6 +31,7 @@ class HomeController extends BaseController
      */
     public function index(Film $filmRepo)
     {
+
         $latestFilm = $filmRepo->getLatestCreated();
         $totalFilm = $filmRepo->count();
         $myRatingCount = $filmRepo->myRatingCount();

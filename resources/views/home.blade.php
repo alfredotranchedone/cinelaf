@@ -3,6 +3,43 @@
 @section('content')
     <div class="container">
 
+        <div class="row justify-content-center mt-1">
+            <div class="col-sm-8">
+                <div class="card shadow">
+                    <div class="card-body">
+
+                        <div class="input-group input-group-lg">
+                            <input type="text"
+                                   class="form-control"
+                                   name="q"
+                                   id="q"
+                                   required
+                                   placeholder="Ricerca il titolo...">
+                            <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">
+                                        <i class="fa fa-search fa-fw mr-1"></i>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="text-center text-sm-right mr-sm-1">
+                            <img src="{{ asset('img/search-by-algolia-light-background.svg') }}"
+                                 alt="Search by Algolia"
+                                 style="max-height: 18px">
+                        </div>
+
+                        <div style="position: relative;">
+                            <div id="search-result"
+                                 class="list-group list-group-flush shadow"
+                                 style="z-index: 1; left:-19px; right:-19px; max-height: 60vh; overflow: auto; position: absolute; top: 20px"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="row justify-content-center mt-4">
 
             <div class="col-sm-8">
@@ -19,7 +56,8 @@
 
                     <div>
                         <div class="progress" style="height: 2px; border-radius: 0">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $totalFilm > 0 ? round(($myRatingCount * 100) / $totalFilm, 0) : '0' }}%"></div>
+                            <div class="progress-bar bg-success" role="progressbar"
+                                 style="width: {{ $totalFilm > 0 ? round(($myRatingCount * 100) / $totalFilm, 0) : '0' }}%"></div>
                         </div>
                     </div>
                     <div class="card-body p-3 d-flex flex-column flex-sm-row justify-content-between align-items-center">
@@ -44,7 +82,6 @@
             </div>
 
         </div>
-
 
 
         <div class="row mt-5 justify-content-center">
@@ -85,7 +122,6 @@
 
         </div>
         <!-- /.row -->
-
 
 
         <div class="row justify-content-center mt-4">
@@ -141,15 +177,18 @@
                         <div class="list-group list-group-flush latest-film border-top">
 
                             @forelse($latestFilm as $film)
-                                <a href="{{ route('film.show',[$film]) }}" class="list-group-item list-group-item-action border-bottom p-2 d-flex justify-content-start">
+                                <a href="{{ route('film.show',[$film]) }}"
+                                   class="list-group-item list-group-item-action border-bottom p-2 d-flex justify-content-start">
 
                                     <div class="mr-2">
-                                        <img src="{{ route('img.locandina', [ $film->locandina ]) }}" alt="" style="max-width: 75px">
+                                        <img src="{{ route('img.locandina', [ $film->locandina ]) }}" alt=""
+                                             style="max-width: 75px">
                                     </div>
                                     <div>
                                         <div class="">
                                             <i class="far fa-bookmark fa-fw"></i>
-                                            {{ $film->titolo }} <small>({{ $film->anno }})</small>
+                                            {{ $film->titolo }}
+                                            <small>({{ $film->anno }})</small>
                                         </div>
                                         <div class="">
                                             <i class="far fa-calendar-alt fa-fw"></i>
@@ -232,6 +271,120 @@
         --}}
 
 
-
     </div>
 @endsection
+
+
+
+
+
+@push('scripts')
+    <script>
+
+        function search(evt) {
+
+            const $btnSend = $('#btnSend');
+            const $results = $('#search-result');
+            const $resultCount = $('#resultCount');
+            const $loading = $('#loading');
+
+            $loading.show();
+
+            if (evt.currentTarget.value.length < 1) {
+                $results.empty();
+                $resultCount.empty();
+                $loading.hide();
+                return;
+            }
+
+            window.axios
+                .post(BASE_URL + '/api/search', {
+                    q: evt.currentTarget.value
+                })
+                .then(function (response) {
+
+                    let resultCount = response.data.length;
+                    console.log(response.data);
+
+                    let html = '';
+                    let data = response.data.data;
+
+                    _.each(data,function (v, k) {
+
+                        let registiArr = [];
+                        if(v.regista){
+                            _.each(v.regista,function (v) {
+                                registiArr.push(v.nome + ' ' + v.cognome)
+                            });
+                        }
+                        let registi = '';
+                        if(registiArr.length > 0){
+                            registi = registiArr.join(', ');
+                        }
+
+                        html += `
+                        <a href="/film/${ v.id }" class="list-group-item text-dark">
+                            <h3>${ v.titolo }</h3>
+                            <p class="mb-2">
+                                <span class="d-inline-block pr-3">
+                                    <i class="fa fa-calendar-alt fa-fw"></i>
+                                    ${ v.anno }
+                                </span>
+                                <span>
+                                    <i class="fa fa-bullhorn fa-fw"></i>
+                                    ${ registi }
+                                </span>
+                            </p>
+                            <small>Inserito da ${ v.user.name }</small>
+                        </a>`;
+
+                    });
+
+                    $results.html(html);
+
+                    let _exists = (resultCount > 0);
+                    // $btnSend.attr('disabled',_exists);
+
+                    if (_exists) {
+                        $btnSend
+                            .attr('disabled', false)
+                            .attr('type', 'button')
+                            .attr('data-toggle', 'modal')
+                            .attr('data-target', '#modal-confirm');
+                    } else {
+                        $btnSend
+                            .attr('type', 'submit')
+                            .removeAttr('data-toggle data-target');
+                    }
+
+                    let _class = resultCount > 0 ? 'text-danger' : 'text-success';
+                    $resultCount.removeClass().addClass(_class).html('(risultati trovati: ' + resultCount + ')')
+
+                })
+                .catch(function (error) {
+                    alert('Si è verificato un errore nella comunicazione con il server');
+                    $results.empty();
+                    $resultCount.empty();
+                    console.log(error);
+                })
+                .then(function () {
+                    $loading.hide();
+                });
+        }
+
+
+        $(document).ready(function () {
+
+            let timer = null;
+            $('#q').on('keyup', function (evt) {
+                // Applica un timeout per non ingolfare il server
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    search(evt);
+                }, 350);
+            });
+
+        });
+
+    </script>
+@endpush
