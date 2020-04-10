@@ -77,8 +77,7 @@ class Film extends Model
     /* Scout / Algolia */
     public function toSearchableArray()
     {
-        $array = $this->only('titolo');
-        return array_merge($array, $registi);
+        return $this->only('titolo');
     }
 
 }

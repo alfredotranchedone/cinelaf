@@ -14,7 +14,7 @@ class AddMediaToFilmsTable extends Migration
     public function up()
     {
         Schema::table('films', function (Blueprint $table) {
-            $table->decimal('media')->index();
+            $table->decimal('media')->nullable()->index();
         });
     }
 

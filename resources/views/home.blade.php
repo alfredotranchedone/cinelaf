@@ -5,37 +5,37 @@
 
         <div class="row justify-content-center mt-1">
             <div class="col-sm-8">
-                <div class="card shadow">
-                    <div class="card-body">
 
-                        <div class="input-group input-group-lg">
-                            <input type="text"
-                                   class="form-control"
-                                   name="q"
-                                   id="q"
-                                   required
-                                   placeholder="Ricerca il titolo...">
-                            <div class="input-group-append">
-                                    <span class="input-group-text" id="basic-addon2">
-                                        <i class="fa fa-search fa-fw mr-1"></i>
-                                    </span>
-                            </div>
+                <div>
+                    <div class="input-group input-group-lg">
+                        <input type="text"
+                               class="form-control"
+                               name="q"
+                               id="q"
+                               required
+                               placeholder="Ricerca il titolo...">
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa fa-search"></i>
+                                <span id="loading" class="spinner-border spinner-border-sm ml-1" style="display: none"></span>
+                            </span>
                         </div>
-
-                        <div class="text-center text-sm-right mr-sm-1">
-                            <img src="{{ asset('img/search-by-algolia-light-background.svg') }}"
-                                 alt="Search by Algolia"
-                                 style="max-height: 18px">
-                        </div>
-
-                        <div style="position: relative;">
-                            <div id="search-result"
-                                 class="list-group list-group-flush shadow"
-                                 style="z-index: 1; left:-19px; right:-19px; max-height: 60vh; overflow: auto; position: absolute; top: 20px"></div>
-                        </div>
-
                     </div>
+
+                    <div class="text-center text-sm-right mr-sm-1">
+                        <img src="{{ asset('img/search-by-algolia-light-background.svg') }}"
+                             alt="Search by Algolia"
+                             style="max-height: 18px;">
+                    </div>
+
+                    <div style="position: relative;">
+                        <div id="search-result"
+                             class="list-group list-group-flush shadow rounded overflow-auto"
+                             style="z-index: 1; left:0px; right:0px; max-height: 65vh; position: absolute; top: -20px"></div>
+                    </div>
+
                 </div>
+
             </div>
         </div>
 
@@ -304,41 +304,8 @@
                 .then(function (response) {
 
                     let resultCount = response.data.length;
-                    console.log(response.data);
 
-                    let html = '';
-                    let data = response.data.data;
-
-                    _.each(data,function (v, k) {
-
-                        let registiArr = [];
-                        if(v.regista){
-                            _.each(v.regista,function (v) {
-                                registiArr.push(v.nome + ' ' + v.cognome)
-                            });
-                        }
-                        let registi = '';
-                        if(registiArr.length > 0){
-                            registi = registiArr.join(', ');
-                        }
-
-                        html += `
-                        <a href="/film/${ v.id }" class="list-group-item text-dark">
-                            <h3>${ v.titolo }</h3>
-                            <p class="mb-2">
-                                <span class="d-inline-block pr-3">
-                                    <i class="fa fa-calendar-alt fa-fw"></i>
-                                    ${ v.anno }
-                                </span>
-                                <span>
-                                    <i class="fa fa-bullhorn fa-fw"></i>
-                                    ${ registi }
-                                </span>
-                            </p>
-                            <small>Inserito da ${ v.user.name }</small>
-                        </a>`;
-
-                    });
+                    let html = window.Film.renderLiveCheck(response.data.data);
 
                     $results.html(html);
 

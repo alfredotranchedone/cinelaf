@@ -9,7 +9,6 @@ namespace Cinelaf\Controllers\User;
 
 
 use Cinelaf\Models\Film;
-use Cinelaf\Models\Movie;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Services\FilmService;
 use Cinelaf\Services\FilmSession;
@@ -117,8 +116,7 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('home')
-                ->with('msg','Movie inserito correttamente!')
-                ->with('msgType','success');
+                ->with('success','Movie inserito correttamente!');
 
         } catch (\Exception $e) {
 
@@ -128,8 +126,7 @@ class FilmController extends BaseController
 
             return redirect()
                 ->route('film.add')
-                ->with('msg','Errore nella creazione del Movie')
-                ->with('msgType','danger');
+                ->with('danger','Errore nella creazione del Movie');
 
         }
 

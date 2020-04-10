@@ -8,6 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
+use Cinelaf\Models\Film;
 use Cinelaf\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class RatingController extends BaseController
     }
 
 
-    public function post_vota(Request $request, Movie $film, \Cinelaf\Repositories\Rating $ratingRepo)
+    public function post_vota(Request $request, Film $film, \Cinelaf\Repositories\Rating $ratingRepo)
     {
 
 
@@ -52,8 +53,7 @@ class RatingController extends BaseController
 
             return redirect()
                 ->route('film.show', [$film->id])
-                ->with('msg','Valutazione salvata!')
-                ->with('msgType','success');
+                ->with('success','Valutazione salvata!');
 
         } catch (\Exception $e) {
 
@@ -63,8 +63,7 @@ class RatingController extends BaseController
 
             return redirect()
                 ->route('film.show', [$film->id])
-                ->with('msg','Errore durante la valutazione!')
-                ->with('msgType','danger');
+                ->with('danger','Errore durante la valutazione!');
 
         }
 
@@ -74,7 +73,7 @@ class RatingController extends BaseController
 
 
 
-    public function delete(Request $request, Movie $film, \Cinelaf\Repositories\Rating $ratingRepo)
+    public function delete(Request $request, Film $film, \Cinelaf\Repositories\Rating $ratingRepo)
     {
 
         $this->validate($request, [
