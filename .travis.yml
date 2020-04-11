@@ -1,13 +1,7 @@
-
-dist: precise
-
 language: php
 
 php:
-  - '7.2'
-
-addons:
-  mariadb: 10.4
+  - '7.2.5'
 
 cache:
   directories:
@@ -15,11 +9,12 @@ cache:
     - vendor
 
 before_script:
-  - mysql -e 'CREATE DATABASE travis_test;'
+  - touch travis_test.sqlite
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
+  - php artisan key:generate
   - php artisan migrate --no-interaction -vvv
 
 script:
-  - vendor/bin/phpunit
+  - php artisan test
