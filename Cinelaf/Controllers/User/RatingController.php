@@ -19,7 +19,7 @@ class RatingController extends BaseController
 {
 
 
-    public function get_vota(Movie $film)
+    public function get_vota(Film $film)
     {
 
         $film->load(['rating']);
