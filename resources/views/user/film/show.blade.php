@@ -54,7 +54,7 @@
                                                 {{ __('Series') }}
                                             @elseif($film->isMovie())
                                                 <i class="fa fa-film fa-fw"></i>
-                                                {{ __('Movie') }}
+                                                {{ __('Movies') }}
                                             @endif
                                         </span>
 
