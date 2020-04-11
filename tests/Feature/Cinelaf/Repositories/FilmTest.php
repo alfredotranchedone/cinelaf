@@ -18,7 +18,7 @@ class FilmTest extends TestCase
      * @return void
      * @test
      */
-    public function save()
+    public function save_film()
     {
 
         $user = factory(User::class)->create();
