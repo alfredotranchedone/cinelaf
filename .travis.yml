@@ -1,3 +1,6 @@
+
+dist: precise
+
 language: php
 
 php:
@@ -6,13 +9,17 @@ php:
 addons:
   mariadb: 10.4
 
+cache:
+  directories:
+    - node_modules
+    - vendor
+
 before_script:
   - mysql -e 'CREATE DATABASE travis_test;'
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
-  - php artisan key:generate
-  - php artisan migrate
+  - php artisan migrate --no-interaction -vvv
 
 script:
   - vendor/bin/phpunit
