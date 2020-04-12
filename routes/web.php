@@ -232,38 +232,29 @@ Route::namespace('\Cinelaf\Controllers\Admin')
 
             });
 
+
+        /* System */
+        Route::prefix('system/')
+            ->name('system.')
+            ->group(
+                function () {
+
+                    Route::get('/reset', 'SystemController@get_reset')->name('reset');
+
+                }
+            );
+
     });
 
 
 
 
-/* System */
-Route::middleware(['web','auth'])
-    ->prefix('system/')
-    ->name('system.')
-    ->group(
-        function () {
-
-            Route::get('/reset', function (){
-                \Illuminate\Support\Facades\Artisan::call('route:clear');
-                dump( \Illuminate\Support\Facades\Artisan::output() );
-                \Illuminate\Support\Facades\Artisan::call('cache:clear');
-                dump( \Illuminate\Support\Facades\Artisan::output() );
-                \Illuminate\Support\Facades\Artisan::call('config:clear');
-                dump( \Illuminate\Support\Facades\Artisan::output() );
-                \Illuminate\Support\Facades\Artisan::call('config:cache');
-                dump( \Illuminate\Support\Facades\Artisan::output() );
-
-                dump( 'reset done' );
-            })->name('reset');
-
-        }
-    );
 
 
 
-/* System */
-Route::middleware(['web','auth'])
+
+/* Command */
+Route::middleware(['auth',\App\Http\Middleware\CheckSuperAdmin::class])
     ->prefix('command/')
     ->name('command.')
     ->group(
@@ -276,26 +267,3 @@ Route::middleware(['web','auth'])
 
         }
     );
-
-
-/*
-Route::middleware(['web',])
-    ->prefix('g/')
-    ->name('g.')
-    ->group(
-        function () {
-
-            Route::get('/', function (){
-
-                $systemUser = new \App\User();
-                $systemUser->name = 'system';
-                $systemUser->email = 'system@cinelaf.it';
-                $systemUser->password = bcrypt('password-da-modificare');
-                $systemUser->is_super_admin = 1;
-                $systemUser->save();
-
-            })->name('index');
-
-        }
-    );
-*/
