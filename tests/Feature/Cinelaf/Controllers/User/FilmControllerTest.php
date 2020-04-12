@@ -75,9 +75,6 @@ class FilmControllerTest extends TestCase
             ])
             ->assertRedirect(route('home'));
 
-        $flash_success = session()->has('success');
-        $this->assertTrue($flash_success);
-
     }
 
 
