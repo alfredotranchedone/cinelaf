@@ -3,7 +3,6 @@
 namespace Tests\Feature\Cinelaf\Controllers\User;
 
 use App\User;
-use Cinelaf\Models\Film;
 use Cinelaf\Repositories\Registi;
 use Cinelaf\Services\FilmSession;
 use Cinelaf\Services\Upload;
@@ -78,31 +77,6 @@ class FilmControllerTest extends TestCase
 
         $flash_success = session()->has('success');
         $this->assertTrue($flash_success);
-
-        /**
-         * Test external methods in film.create
-         */
-
-        $uploadService = new Upload();
-        $filmRepo = new \Cinelaf\Repositories\Film();
-        $registiRepo = new Registi();
-
-        // Carica File
-        // $fileNameToStore = $uploadService->locandina($request);
-
-        // Salva film
-        $film = $filmRepo->save($titolo, $anno, $locandina->name, $type);
-
-        $this->assertNotNull($film);
-
-        // Salva regista
-        $registiRepo->attachRegistaToFilm($regista, $film->id);
-
-        /** * **/
-
-        $registaInserted = DB::table('films_registi')->where('film_id',$film->id)->first();
-
-        $this->assertNotNull($registaInserted);
 
     }
 
