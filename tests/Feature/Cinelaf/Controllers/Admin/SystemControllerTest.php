@@ -12,7 +12,7 @@ class SystemControllerTest extends TestCase
 
     use RefreshDatabase, WithFaker;
 
-    protected $user;
+    protected $admin;
 
     protected function setUp(): void
     {
@@ -25,26 +25,21 @@ class SystemControllerTest extends TestCase
         $user->is_super_admin = 1;
         $user->save();
 
-        $this->user = $user;
+        $this->admin = $user;
 
     }
 
 
-    /**
-     *
-     * @return void
-     */
-    public function testAdminCanReset()
-    {
 
-        $this->actingAs($this->user);
+    public function testUserCantReset()
+    {
+        $user=factory(User::class)->create();
+        $this->actingAs($user);
 
         $response = $this->get(route('admin.system.reset'));
-
-        $response
-            ->assertSeeText('Reset Done');
-        $response->assertStatus(200);
-
+        $response->assertStatus(302);
 
     }
+
+
 }
