@@ -16,12 +16,15 @@ class SystemController extends BaseController
 
         $cmds = ['route:clear','cache:clear','config:clear','config:cache'];
 
+        $output='';
         foreach ($cmds as $cmd){
             \Illuminate\Support\Facades\Artisan::call($cmd);
-            dump( \Illuminate\Support\Facades\Artisan::output() );
+            $output .= '<pre>'. \Illuminate\Support\Facades\Artisan::output() .'</pre>';
         }
 
-        echo( 'Reset Done' );
+        $output .= '<div>Reset Done</div>';
+
+        return view('admin.generic', compact('output'));
 
     }
 
