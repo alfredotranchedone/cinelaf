@@ -23,8 +23,6 @@ class RatingControllerTest extends TestCase
     public function user_vote_a_film()
     {
 
-        $this->withoutExceptionHandling();
-
         $user = factory(User::class)->create();
         $film = factory(Film::class)->create();
 
