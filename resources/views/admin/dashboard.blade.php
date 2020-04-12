@@ -120,7 +120,7 @@
 
 
                             <div class="list-group-item">
-                                <h4>Cestino Movie</h4>
+                                <h4>Cestino Film</h4>
                                 <p>
                                     Elenco delle schede film cestinate ma non ancora eliminate.
                                 </p>
@@ -131,6 +131,21 @@
                                     Mostra Cestino
                                     <i class="fa fa-angle-right fa-fw"></i>
                                 </button>
+                            </div>
+
+
+                            <div class="list-group-item">
+                                <h4>Reset Cache</h4>
+                                <p>
+                                    Svuota la Cache del sistema.
+                                </p>
+                                <a href="{{ route('admin.system.reset') }}"
+                                   target="_blank"
+                                   class="btn btn-light">
+                                    <i class="fa fa-trash fa-fw"></i>
+                                    Reset Cache
+                                    <i class="fa fa-angle-right fa-fw"></i>
+                                </a>
                             </div>
 
                         </div>
@@ -154,7 +169,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Cestino Movie</h4>
+                    <h4 class="modal-title">Cestino Film</h4>
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
