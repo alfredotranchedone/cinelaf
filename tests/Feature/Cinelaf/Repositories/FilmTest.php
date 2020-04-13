@@ -3,8 +3,11 @@
 namespace Tests\Feature\Cinelaf\Repositories;
 
 use App\User;
+use Cinelaf\Models\Regista;
+use Cinelaf\Repositories\Film;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -12,6 +15,83 @@ class FilmTest extends TestCase
 {
 
     use RefreshDatabase, WithFaker;
+
+    protected $user;
+    protected $repo;
+
+    protected function setUp() : void
+    {
+        parent::setUp();
+
+        $this->user = factory(User::class)->create();
+
+    }
+
+
+    public function testGetFullFilmCollection()
+    {
+
+        $filmsfactory = factory(\Cinelaf\Models\Film::class,4)->create(['user_id'=>$this->user->id]);
+        $film = factory(\Cinelaf\Models\Film::class)->create([
+            'titolo'=>'##Prova##',
+            'user_id'=>$this->user->id
+        ]);
+
+        $repo = new Film();
+        $data = $repo->get('full');
+
+        $this->assertNotNull($data);
+        $this->assertCount(5,$data);
+
+    }
+
+
+
+    public function testGetFilteredFilmCollectionWithOwnerAndRegista()
+    {
+
+        $filmsfactory = factory(\Cinelaf\Models\Film::class,5)->create(['user_id'=>$this->user->id]);
+        $film = factory(\Cinelaf\Models\Film::class)->create([
+            'titolo'=>'##Prova##',
+            'user_id'=>$this->user->id
+        ]);
+        $regista = factory(Regista::class)->create();
+
+        $film->regista()->attach($regista->id);
+
+        $repo = new Film();
+        $data = $repo->get('full',5,'##Prova##',true,true);
+
+        $this->assertNotNull($data);
+        $this->assertCount(1,$data);
+
+        $this->assertInstanceOf(User::class,$data->first()->user()->first());
+        $this->assertInstanceOf(Regista::class,$data->first()->regista()->first());
+
+    }
+
+
+
+    public function testFilterFilmCollection()
+    {
+
+        $filmsfactory = factory(\Cinelaf\Models\Film::class,5)->create(['user_id'=>$this->user->id]);
+        $films = factory(\Cinelaf\Models\Film::class,5)->create([
+            'titolo'=>'##Prova##',
+            'user_id'=>$this->user->id
+        ]);
+
+        $repo = new Film();
+        $data = $repo->filter('##Prova##');
+
+        $this->assertNotNull($data);
+        $this->assertCount(5,$data);
+
+    }
+
+
+
+
 
     /**
      *
@@ -21,10 +101,9 @@ class FilmTest extends TestCase
     public function save_film()
     {
 
-        $user = factory(User::class)->create();
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
-        $filmRepo = new \Cinelaf\Repositories\Film();
+        $filmRepo = new Film();
 
         $titolo = $this->faker->sentence();
         $type = $this->faker->numberBetween(1,2);
@@ -37,4 +116,5 @@ class FilmTest extends TestCase
         $this->assertEqualsIgnoringCase($titolo, $film->titolo);
 
     }
+
 }
