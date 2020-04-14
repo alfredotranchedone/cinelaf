@@ -3,10 +3,12 @@
 namespace Tests\Feature\Cinelaf\Repositories;
 
 use App\User;
+use Cinelaf\Models\Rating;
 use Cinelaf\Models\Regista;
 use Cinelaf\Repositories\Film;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -89,8 +91,28 @@ class FilmTest extends TestCase
 
     }
 
+    public function testFilterUserOwnRating()
+    {
 
+        $this->actingAs($this->user);
 
+        $filmsfactory = factory(\Cinelaf\Models\Film::class,5)->create(['user_id'=>$this->user->id]);
+        $film = factory(\Cinelaf\Models\Film::class)->create([
+            'titolo'=>'Prova',
+            'user_id'=>$this->user->id
+        ]);
+        $film->rating()->save(new Rating([
+            'user_id' => $this->user->id,
+            'voto' => 4.0
+        ]));
+
+        $repo = new Film();
+        $data = $repo->filterMyRating();
+
+        $this->assertNotNull($data);
+        $this->assertInstanceOf(Collection::class, $data );
+
+    }
 
 
     /**

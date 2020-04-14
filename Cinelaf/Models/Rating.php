@@ -16,6 +16,8 @@ class Rating extends Model
 
     protected $table = 'ratings';
 
+    protected $fillable = ['user_id','voto'];
+
     public function film() {
         return $this->belongsTo(Film::class,'film_id');
     }
