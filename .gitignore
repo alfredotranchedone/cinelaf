@@ -18,3 +18,5 @@ show_process_list.sh
 start_env.sh
 stop_env.sh
 test.sh
+/reports
+test-coverage.sh
