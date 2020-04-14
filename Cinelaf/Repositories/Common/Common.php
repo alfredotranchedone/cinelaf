@@ -10,6 +10,9 @@ namespace Cinelaf\Repositories\Common;
 
 use Carbon\Carbon;
 use Cinelaf\Configuration\Configuration;
+use Cinelaf\Models\DataMapper\UserNotRated;
+use Cinelaf\Models\DataMapper\UserRated;
+use Cinelaf\Models\DataMapper\UserRating;
 use Cinelaf\Models\Film;
 use Cinelaf\Models\Rating;
 use Cinelaf\Resources\FilmSelectResource;
@@ -32,11 +35,11 @@ class Common
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|Collection
      */
-    public function get(string $format = 'full', int $limit = 50, string $terms = null, bool $withRegisti=false, bool $withOwner=false)
+    public function get(string $format = 'full', int $limit = 50, string $terms = null, bool $withRegisti = false, bool $withOwner = false)
     {
 
-        if(!$format)
-            $format='full';
+        if (!$format)
+            $format = 'full';
 
         $data = $this->model::when($terms, function ($q) use ($terms) {
             return $q->whereRaw("titolo LIKE ?", ['%' . $terms . '%']);
@@ -45,20 +48,20 @@ class Common
                 return $q->limit($limit);
             })
             ->when($withRegisti, function ($q) {
-                return $q->with(['regista' => function($u){
-                    $u->select('registi.id','nome','cognome');
+                return $q->with(['regista' => function ($u) {
+                    $u->select('registi.id', 'nome', 'cognome');
                 }]);
             })
             ->when($withOwner, function ($q) {
-                return $q->with(['user' => function($u){
-                    $u->select('id','name','email');
+                return $q->with(['user' => function ($u) {
+                    $u->select('id', 'name', 'email');
                 }]);
             })
             ->orderBy('titolo');
 
         $out = $data->get();
 
-        if($format=='select'){
+        if ($format == 'select') {
             $out = FilmSelectResource::collection($out);
         }
 
@@ -67,8 +70,7 @@ class Common
     }
 
 
-
-    public function filter(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
+    public function filter(string $terms = null, int $offset = 0, int $limit = 50, string $orderby = 'titolo ASC')
     {
 
         $data = $this->model::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
@@ -84,8 +86,6 @@ class Common
     }
 
 
-
-
     /**
      * @param string|null $terms
      * @param int         $offset
@@ -94,7 +94,7 @@ class Common
      *
      * @return \Illuminate\Support\Collection
      */
-    public function filterMyRating(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='ratings.updated_at DESC')
+    public function filterMyRating(string $terms = null, int $offset = 0, int $limit = 50, string $orderby = 'ratings.updated_at DESC')
     {
 
         $user_id = auth()->id();
@@ -110,16 +110,19 @@ class Common
             ->whereRaw("CONCAT(titolo, anno) LIKE ?", ['%' . $terms . '%'])
             ->where('ratings.user_id', $user_id)
             ->whereNull('f.deleted_at')
-            ->leftJoin('films as f','f.id','=','ratings.film_id')
+            ->leftJoin('films as f', 'f.id', '=', 'ratings.film_id')
             ->offset($offset)
             ->limit($limit)
             ->orderByRaw($orderby);
 
-        if($this->type)
-            $data->where('f.type',$this->type);
+        if ($this->type)
+            $data->where('f.type', $this->type);
 
         $out = $data->get();
 
+        return $out->mapInto(UserRated::class);
+
+        /*
         return $out->map(function ($item){
             return $item = [
                 'voto' => $item->voto,
@@ -137,23 +140,25 @@ class Common
                     'updated_at' => $item->film_updated_at
                 ]
             ];
-            /*
-            return collect($item)->put('film',[
-                'titolo' => $item->titolo,
-                'anno' => $item->anno,
-                'locandina' => $item->locandina
-            ]);
-             */
+
         });
+        */
 
     }
 
 
-
-    public function filterMyNotRated(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
+    /**
+     * @param string|null $terms
+     * @param int         $offset
+     * @param int         $limit
+     * @param string      $orderby
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function filterMyNotRated(string $terms = null, int $offset = 0, int $limit = 50, string $orderby = 'titolo ASC')
     {
 
-        /*
+        /**
         $data = DB::table('films as f')
             ->selectRaw('f.*, r.voto')
             ->whereRaw("CONCAT(titolo, anno) LIKE ?", ['%' . $terms . '%'])
@@ -186,36 +191,23 @@ class Common
             ->limit($limit)
             ->orderByRaw($orderby);
 
-        if($this->type)
+        if ($this->type)
             $data->where('f.type', $this->type);
 
         $out = $data->get();
 
-        return $out->map(function ($item){
-            return $item = [
-                'id' => $item->id,
-                'titolo' => $item->titolo,
-                'anno' => $item->anno,
-                'locandina' => $item->locandina,
-                'user_id' => $item->user_id,
-                'valutazione' => $item->valutazione,
-                'created_at' => $item->created_at,
-                'updated_at' => $item->updated_at
-            ];
-
-        });
+        return $out->mapInto(UserNotRated::class);
 
     }
 
 
-
-    public function filterNoQuorum(string $terms = null, int $offset = 0, int $limit = 50, string $orderby='titolo ASC')
+    public function filterNoQuorum(string $terms = null, int $offset = 0, int $limit = 50, string $orderby = 'titolo ASC')
     {
 
         $data = $this->model::whereRaw("CONCAT(titolo,anno) LIKE ?", ['%' . $terms . '%'])
             ->offset($offset)
             ->with('regista')
-            ->where('valutazione',0)
+            ->where('valutazione', 0)
             ->limit($limit)
             ->orderByRaw($orderby);
 
@@ -226,12 +218,10 @@ class Common
     }
 
 
-
     public function count()
     {
         return $this->model::count();
     }
-
 
 
     /**
@@ -242,11 +232,11 @@ class Common
 
         $data = DB::table('films as f')
             ->selectRaw('f.*, r.voto')
-            ->leftJoin('ratings as r','r.film_id','=','f.id')
+            ->leftJoin('ratings as r', 'r.film_id', '=', 'f.id')
             ->whereNull('r.voto')
             ->whereNull('f.deleted_at');
 
-        if($this->type)
+        if ($this->type)
             $data->where('f.type', $this->type);
 
         $out = $data->count();
@@ -254,7 +244,6 @@ class Common
         return $out;
 
     }
-
 
 
     public function countMyNotRated()
@@ -272,8 +261,8 @@ class Common
             ->whereRaw("f.id NOT IN ( SELECT film_id FROM ratings WHERE user_id = ? )", [auth()->id()])
             ->whereNull('deleted_at');
 
-        if($this->type)
-            $data->where('f.type',$this->type);
+        if ($this->type)
+            $data->where('f.type', $this->type);
 
         $out = $data->count();
 
@@ -286,12 +275,12 @@ class Common
     {
 
         $data = DB::table('films as f')
-            ->where('valutazione',0)
+            ->where('valutazione', 0)
             ->whereNull('deleted_at');
 
         $out = $data->count();
 
-        if($this->type)
+        if ($this->type)
             $data->where('f.type', $this->type);
 
         return $out;
@@ -299,24 +288,22 @@ class Common
     }
 
 
-
-
-    public function topRated(int $limit=5)
+    public function topRated(int $limit = 5)
     {
-        return $this->rated('best',$limit);
+        return $this->rated('best', $limit);
     }
 
     /**
      * @param int    $limit
-     * @param string $type  'best' | 'worst'
+     * @param string $type 'best' | 'worst'
      *
      * @return Collection
      */
-    public function rated(string $type, int $limit=5)
+    public function rated(string $type, int $limit = 5)
     {
 
         $direction = null;
-        switch ($type){
+        switch ($type) {
             case 'best':
                 $direction = 'DESC';
                 break;
@@ -326,9 +313,9 @@ class Common
         }
 
 
-        $coll = $this->model::orderBy('valutazione',$direction)
+        $coll = $this->model::orderBy('valutazione', $direction)
             ->with('user')
-            ->where('valutazione','>','0')
+            ->where('valutazione', '>', '0')
             ->limit($limit)
             ->get();
 
@@ -336,10 +323,10 @@ class Common
 
     }
 
-    public function worstRated(int $limit=5)
+    public function worstRated(int $limit = 5)
     {
 
-        return $this->rated('worst',$limit);
+        return $this->rated('worst', $limit);
 
     }
 
@@ -348,15 +335,15 @@ class Common
      * Return all films!!!
      *
      * @param int    $limit
-     * @param string $type  'most' | 'least'
+     * @param string $type 'most' | 'least'
      *
      * @return Collection
      */
-    public function mostLeastRated(string $type, int $limit=5)
+    public function mostLeastRated(string $type, int $limit = 5)
     {
 
         $direction = null;
-        switch ($type){
+        switch ($type) {
             case 'most':
                 $direction = 'DESC';
                 break;
@@ -373,9 +360,9 @@ class Common
                                     films.created_at,
                                     users.name as username'
         )
-            ->leftJoin('films','films.id','=','ratings.film_id')
-            ->leftJoin('users','users.id','=','films.user_id')
-            ->orderBy('totale',$direction)
+            ->leftJoin('films', 'films.id', '=', 'ratings.film_id')
+            ->leftJoin('users', 'users.id', '=', 'films.user_id')
+            ->orderBy('totale', $direction)
             ->groupBy('ratings.film_id')
             ->limit($limit)
             ->get();
@@ -385,13 +372,12 @@ class Common
     }
 
 
-
     public function myRatingCount()
     {
         $user_id = auth()->id();
         return DB::table('ratings')
             ->distinct('film_id')
-            ->where('user_id',$user_id)
+            ->where('user_id', $user_id)
             ->count('film_id');
     }
 
@@ -404,10 +390,6 @@ class Common
     }
 
 
-
-
-
-
     public function getLatestCreated($limit = 5)
     {
 
@@ -416,8 +398,6 @@ class Common
             ->limit($limit)
             ->get();
     }
-
-
 
 
     public function save($titolo, $anno, $locandina, $type)
@@ -436,23 +416,16 @@ class Common
     }
 
 
-
     public function getTrashed()
     {
         return $this->model::onlyTrashed()->orderBy('titolo')->get();
     }
 
 
-
-
     public function forceDelete(int $film_id)
     {
-        return DB::table('films')->where('id',$film_id)->delete();
+        return DB::table('films')->where('id', $film_id)->delete();
     }
-
-
-
-
 
 
 }
