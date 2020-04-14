@@ -117,7 +117,7 @@ class FilmController extends BaseApiController
         $data = $movieRepo->filterMyRating($q,$offset,$limit,$orderBy);
         $totale = $movieRepo->myRatingCount();
 
-        return $this->datatable_success_api_response($request, $totale, $data);
+        return $this->datatable_success_api_response($request, $totale, $data->toArray());
 
     }
 

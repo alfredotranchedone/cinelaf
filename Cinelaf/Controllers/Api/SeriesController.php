@@ -118,7 +118,7 @@ class SeriesController extends BaseApiController
         $data = $seriesRepo->filterMyRating($q,$offset,$limit,$orderBy);
         $totale = $seriesRepo->myRatingCount();
 
-        return $this->datatable_success_api_response($request, $totale, $data);
+        return $this->datatable_success_api_response($request, $totale, $data->toArray());
 
     }
 
