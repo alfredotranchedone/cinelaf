@@ -229,7 +229,7 @@ class FilmControllerTest extends TestCase
                 'column' => 'titolo',
                 'dir' => 'ASC'
             ]],
-        ]))->dump();
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonCount(1, 'data');
@@ -301,7 +301,7 @@ class FilmControllerTest extends TestCase
                 'column' => 'titolo',
                 'dir' => 'ASC'
             ]],
-        ]))->dump();
+        ]));
 
         $response->assertStatus(200);
         $response->assertJsonCount(0, 'data');
