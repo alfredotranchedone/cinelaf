@@ -1,6 +1,9 @@
 name: Tests
 
 on:
+  push:
+    branches: 
+      master
   schedule:
     - cron: '0 */12 * * *'
   pull_request:
