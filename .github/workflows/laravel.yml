@@ -26,7 +26,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Copy .env.travis
-      run: php -r "file_exists('.env.travis') || copy('.env.travis', '.env');"
+      run: cp .env.travis .env
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Generate key
