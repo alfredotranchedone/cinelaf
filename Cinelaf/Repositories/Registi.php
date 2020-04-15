@@ -26,11 +26,11 @@ class Registi
      *
      * @return \Illuminate\Support\Collection
      */
-    public function get(string $format = 'full', int $limit = 50, string $terms = null, bool $withFilm=false)
+    public function get( $format = 'full', int $limit = 50, string $terms = null, bool $withFilm=false)
     {
 
         $data = Regista::when($terms, function ($q) use ($terms) {
-                return $q->whereRaw("CONCAT(nome,cognome) LIKE ?", ['%' . $terms . '%']);
+                return $q->whereRaw("CONCAT_WS(' ', nome,cognome) LIKE ?", ['%' . $terms . '%']);
             });
             $data->when($limit, function ($q) use ($limit) {
                 return $q->limit($limit);
