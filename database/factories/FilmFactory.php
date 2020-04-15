@@ -10,6 +10,7 @@ $factory->define(\Cinelaf\Models\Film::class, function (Faker $faker) {
         'titolo' => $faker->sentence(rand(3,5)),
         'anno' => $faker->year,
         'locandina' => $faker->url,
-        'user_id' => $faker->randomDigit
+        'user_id' => $faker->randomDigit,
+        'valutazione' => $faker->numberBetween(1,5)
     ];
 });

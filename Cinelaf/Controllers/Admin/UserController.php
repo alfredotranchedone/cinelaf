@@ -44,7 +44,8 @@ class UserController extends BaseController
         $this->validate($request,[
             'name' => 'required|max:100|min:3|unique:users,name',
             'email' => 'required|max:100|min:6|email',
-            'password' => 'required|confirmed|max:50'
+            'password' => 'required|confirmed|max:50',
+            'admin' => 'required|in:0,1'
         ]);
 
         DB::beginTransaction();
