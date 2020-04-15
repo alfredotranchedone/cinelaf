@@ -1,9 +1,10 @@
 name: Tests
 
 on:
-  schedule:
-    - cron: '0 */12 * * *'
-  pull_request:
+  push:
+    # DISABLED
+    branches-ignore:
+      - '**'
 
 jobs:
   tests:
