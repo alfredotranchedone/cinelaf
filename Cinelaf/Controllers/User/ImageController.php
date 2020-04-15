@@ -8,6 +8,8 @@
 namespace Cinelaf\Controllers\User;
 
 
+use Illuminate\Support\Facades\File;
+
 class ImageController
 {
 
@@ -15,9 +17,11 @@ class ImageController
     {
 
         $locandina = $locandina ?? 'placeholder.jpg';
-        return response()->file(storage_path('app/public/locandine/' . $locandina));
 
-        // Storage::get('public/locandine/'.$locandina);
+        if(File::exists(storage_path('app/public/locandine/' . $locandina)) )
+            return response()->file(storage_path('app/public/locandine/' . $locandina));
+
+        return response()->file(storage_path('app/public/locandine/placeholder.jpg'));
 
     }
 

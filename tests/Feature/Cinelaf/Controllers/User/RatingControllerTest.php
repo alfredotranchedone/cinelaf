@@ -14,6 +14,28 @@ class RatingControllerTest extends TestCase
 
     use RefreshDatabase, WithFaker;
 
+    private $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp(); //
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $this->user = $user;
+
+    }
+
+
+    public function testGetVota()
+    {
+        $film = factory(Film::class)->create();
+        $response = $this->get(route('film.vota', $film->id));
+        $response->assertViewIs('user.rating.vota');
+    }
+
+
+
     /**
      * An User can Vote.
      *
@@ -23,7 +45,6 @@ class RatingControllerTest extends TestCase
     public function user_vote_a_film()
     {
 
-        $user = factory(User::class)->create();
         $film = factory(Film::class)->create();
 
         $this->assertDatabaseHas('films',['titolo' => $film->titolo, 'anno' => $film->anno]);
@@ -31,22 +52,43 @@ class RatingControllerTest extends TestCase
         $voto = $this->faker()->numberBetween(1,5);
 
         $response = $this
-            ->actingAs($user)
             ->post(route('film.vota.save',$film->id),[
                 'voto' => $voto
             ]);
 
+        $response->assertSessionMissing('errors');
+
         $rate = Rating::where('film_id', $film->id)
-            ->where('user_id', $user->id)
+            ->where('user_id', $this->user->id)
             ->first();
 
         $this->assertNotNull($rate);
 
         $response->assertRedirect(route('film.show', [$film->id]));
 
-        $flash_success = session()->has('success');
 
-        $this->assertTrue($flash_success);
+    }
+
+
+
+    public function testDeleteRating()
+    {
+
+        $film = factory(Film::class)->create();
+        $film->rating()->save(new Rating([
+            'user_id' => $this->user->id,
+            'voto' => 4.0
+        ]));
+
+        $this->assertNotNull($film->rating);
+
+        $response = $this->delete(route('film.vota.delete',$film->id),[
+            'ratingId' => encrypt( $film->rating->first()->id )
+        ]);
+
+        $response->assertSessionMissing('errors');
+
+        $this->assertDatabaseMissing('ratings', ['id' => $film->rating->first()->id ]);
 
     }
 

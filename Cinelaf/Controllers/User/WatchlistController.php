@@ -8,6 +8,7 @@
 namespace Cinelaf\Controllers\User;
 
 
+use Cinelaf\Models\Film;
 use Cinelaf\Models\Movie;
 use Cinelaf\Logger\Logger;
 use Cinelaf\Repositories\Watchlist;
@@ -30,7 +31,7 @@ class WatchlistController extends BaseController
     }
 
 
-    public function get_add(Watchlist $watchlistRepo, Movie $film)
+    public function get_add(Watchlist $watchlistRepo, Film $film)
     {
 
         try {

@@ -32,7 +32,6 @@ class Upload
 
             if ($request->hasFile($keyLocandina)) {
 
-
                 $file = $request->file($keyLocandina);
                 $fileNameToStore = $filename = auth()->id() . '-' . md5('loc-' . time()) . '.' . $file->getClientOriginalExtension();
 

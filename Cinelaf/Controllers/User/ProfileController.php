@@ -33,6 +33,8 @@ class ProfileController extends BaseController
     public function put_me(Request $request, User $user)
     {
 
+        if($user->id != auth()->id())
+            abort(401);
 
         $this->validate($request,[
             'name' => ['required','max:100','min:3',Rule::unique('users','name')->ignore($user->id)],

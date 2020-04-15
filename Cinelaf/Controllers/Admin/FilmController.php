@@ -64,7 +64,7 @@ class FilmController extends BaseController
             $registiRepo = new Registi();
             $registiRepo
                 ->cleanRegistiFromFilm($film->id)
-                ->attachRegistaToFilm($request->regista,$film->id);
+                ->attachRegistaToFilm($request->registi,$film->id);
 
             /* Aggiorna Valutazione */
             $ratingRepo = new Rating();
@@ -103,12 +103,12 @@ class FilmController extends BaseController
             // Watchlist
             $watchlistRepo->removeFilmFromWatchlists($film->id);
 
-            // Movie
+            // Film
             $film->delete();
 
             return redirect()
                 ->route('admin.dashboard')
-                ->with('success','Movie eliminato!');
+                ->with('success','Film eliminato!');
 
         } catch (\Exception $e) {
 

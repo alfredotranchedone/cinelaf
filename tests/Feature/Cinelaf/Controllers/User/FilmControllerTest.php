@@ -3,6 +3,8 @@
 namespace Tests\Feature\Cinelaf\Controllers\User;
 
 use App\User;
+use Cinelaf\Models\Film;
+use Cinelaf\Models\Regista;
 use Cinelaf\Services\FilmSession;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,6 +17,33 @@ class FilmControllerTest extends TestCase
 
     use RefreshDatabase, WithFaker;
 
+
+    private $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp(); //
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $this->user = $user;
+
+    }
+
+
+
+
+    public function testGetIndex()
+    {
+
+        $response = $this->get(route('film.index'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.film.index');
+
+    }
+
+
     /**
      * @return void
      * @test
@@ -25,7 +54,6 @@ class FilmControllerTest extends TestCase
         Storage::fake('local');
 
         $filmSession = new FilmSession();
-        $user = factory(User::class)->create();
 
         $titolo = $this->faker->sentence();
         $regista = array($this->faker->numberBetween(1,10));
@@ -33,25 +61,24 @@ class FilmControllerTest extends TestCase
         $anno = $this->faker->year;
         $locandina = UploadedFile::fake()->image('test_img.jpg',500,500);
 
-        $response = $this->actingAs($user);
-
         /* Step 1 */
-        $response
+        $response = $this
             ->get(route('film.add'))
             ->assertStatus(200);
 
         /* Step 2 */
-        $response
+        $response = $this
             ->post(route('film.add.step_2'),[
                 'titolo' => $titolo
-            ])
-            ->assertStatus(200);
+            ]);
+
+        $response->assertStatus(200);
 
         // Check $filmsession for $titolo
         $this->assertEqualsIgnoringCase($titolo, $filmSession->get()['titolo']);
 
         /* Step 3 */
-        $response
+        $response = $this
             ->post(route('film.add.step_3'),[
                 'regista' => $regista,
                 'type' => $type
@@ -65,13 +92,58 @@ class FilmControllerTest extends TestCase
         // dump($filmSession->get());
 
         /* Save */
-        $response
+        $response = $this
             ->post(route('film.create'),[
                 'anno' => $anno,
                 'locandina' => $locandina
-            ])
-            ->assertRedirect(route('home'));
+            ]);
 
+        $response->assertSessionMissing('errors');
+
+        $response->assertRedirect(route('home'));
+
+    }
+
+    public function testShowFilm()
+    {
+
+        $film=factory(Film::class)->create(['user_id'=>$this->user->id]);
+        $regista = factory(Regista::class)->create();
+        $film->regista()->attach($regista->id);
+
+        $response = $this->get(route('film.show',$film->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.film.show');
+
+    }
+
+
+    public function testGetUserRated()
+    {
+
+        $response = $this->get(route('film.myratings'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.film.myratings');
+    }
+
+    public function testGetUserNotRated()
+    {
+
+        $response = $this->get(route('film.mynotrated'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.film.mynotrated');
+    }
+
+
+    public function testGetUserNoQuorum()
+    {
+        $response = $this->get(route('film.noquorum'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.film.noquorum');
     }
 
 

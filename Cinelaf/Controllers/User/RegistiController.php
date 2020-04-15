@@ -35,8 +35,7 @@ class RegistiController extends BaseController
             if($registiRepo->exists($request->nome, $request->cognome)){
                 return redirect()
                     ->back()
-                    ->with('msg','Attenzione! Regista già presente.')
-                    ->with('msgType','warning');
+                    ->with('warning','Attenzione! Regista già presente.');
             }
 
             /* Salva */
@@ -46,8 +45,7 @@ class RegistiController extends BaseController
 
             return redirect()
                 ->back()
-                ->with('msg','Regista creato!.')
-                ->with('msgType','success');
+                ->with('success','Regista creato!.');
 
 
         } catch (\Exception $e) {
@@ -58,8 +56,7 @@ class RegistiController extends BaseController
 
             return redirect()
                 ->back()
-                ->with('msg','Errore nella creazione del Movie')
-                ->with('msgType','danger');
+                ->with('danger','Errore nella creazione del Movie');
 
         }
 
