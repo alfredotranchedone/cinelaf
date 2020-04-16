@@ -7,5 +7,17 @@
 
 ## About
 
-Cinelaf is a community-driven series & movies database with a simple ranking system.
+Cinelaf is a simple community-driven series & movies database with a simple ranking system.
+
+
+## Requirements
+- Laravel 7
+- PHP 7.2.5
+- MariaDb 10.4
+
+
+## ToDo
+- Translations
+- Scout/Algolia as optional feature
+- Comments/Reviews? 
 
