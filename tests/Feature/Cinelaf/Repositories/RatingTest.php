@@ -53,7 +53,7 @@ class RatingTest extends TestCase
     }
 
 
-    public function test_remove_all_votes_by_user_()
+    public function test_remove_all_votes_of_a_user_()
     {
 
         $total_film_to_create = 10;
@@ -61,7 +61,7 @@ class RatingTest extends TestCase
 
         $user = factory(User::class)->create();
         $this->actingAs($user);
-        $films = factory(Film::class,$total_film_to_create)->create();
+        $films = factory(Film::class,$total_film_to_create)->create(['valutazione' => 0]);
 
         $this->assertEquals(10, $films->count());
 
