@@ -17,6 +17,7 @@ Cinelaf is a simple community-driven series & movies database with a simple rank
 
 
 ## ToDo
+- !!! Strategy to update films rank when `valutazione` decrease to `0` (i.e. when a vote is removed) 
 - Translations
 - Scout/Algolia as optional feature
 - Comments/Reviews? 

@@ -54,6 +54,39 @@ class Rating
 
     /**
      *
+     * Rimuovi i voti dell'utente, ricalcolando poi valutazione e rank
+     *
+     * @param int $user_id
+     * @return int
+     */
+    public function removeRatingsByUserIdAndUpdateFilms(int $user_id)
+    {
+
+        $userRating = $this->getRatingsByUser($user_id);
+
+        $userRating->each(function ($rating) {
+            $this->removeRating($rating->id, $rating->film_id);
+        });
+
+        return $userRating->count();
+
+    }
+
+
+
+    public function deleteRatingsByUser(int $user_id)
+    {
+
+        return DB::table('ratings')
+            ->where('user_id',$user_id)
+            ->delete();
+
+    }
+
+
+
+    /**
+     *
      * Aggiorna la valutazione del singolo film.
      * Ad ogni aggiornamento ricalcola il rank di tutti i film, se valutazione > 0
      *
@@ -194,7 +227,6 @@ class Rating
      */
     public function updateRank()
     {
-
         $sql = 'UPDATE films SET `rank`= @r:= (@r+1) WHERE valutazione > 0 ORDER BY valutazione DESC, titolo asc';
         DB::statement(DB::raw('SET @r=0'));
         DB::select(DB::raw($sql));

@@ -9,6 +9,7 @@ namespace Cinelaf\Controllers\Admin;
 
 
 use App\User;
+use Cinelaf\Repositories\Rating;
 use Cinelaf\Traits\Redirectable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -126,6 +127,11 @@ class UserController extends BaseController
     public function delete(User $user)
     {
         try {
+
+            $user_id = $user->id;
+            $ratingRepo = new Rating();
+
+
 
             $user->delete();
 
