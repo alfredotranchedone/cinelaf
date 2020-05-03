@@ -67,21 +67,23 @@ class RatingTest extends TestCase
 
         $ratingRepo = new \Cinelaf\Repositories\Rating();
 
+        $film_to_compare = Film::all()->last();
+
         /* Assegna un voto (5) per ogni film con l'utente corrente */
         $films->each(function ($film) use ($ratingRepo) {
             $ratingRepo->save($film->id, 5);
         });
 
         /* Assegna altri 5 voti al secondo film per calcolarne il rank (2) */
-        $this->add_extra_rating_to_film(5, 2, 2);
+        $this->add_extra_rating_to_film(5, $film_to_compare->id, 2);
 
 
         /**
          * Scenario 1: primo film, voti totali 5, eliminando un voto la valutazione scende a 0
          */
 
-        $first_film = Film::find(1);
-dump(Film::all(),$first_film);
+        $first_film = Film::first();
+
         /* Controlla valutazione e media iniziali */
         $this->assertEquals("0.00", $first_film->valutazione);
         $this->assertEquals("5.00", $first_film->media);
@@ -103,7 +105,7 @@ dump(Film::all(),$first_film);
 
 
         /* Controlla che il rank del primo film sia 1 */
-        $first_film_updated = Film::find(1);
+        $first_film_updated = Film::first();
         $this->assertEquals(1, $first_film_updated->rank);
 
         /* Controlla valutazione e media aggiornati */
@@ -121,7 +123,7 @@ dump(Film::all(),$first_film);
         /* Forza nuovamente l'update del Rank */
         $ratingRepo->updateRank();
 
-        $first_film_updated = Film::find(1); // Ricarica il primo film
+        $first_film_updated = Film::first(); // Ricarica il primo film
 
         /* Controlla valutazione e media dopo l'eliminazione */
         $this->assertEquals("0.00", $first_film_updated->valutazione);
@@ -140,18 +142,19 @@ dump(Film::all(),$first_film);
         /* Forza nuovamente l'update del Rank */
         $ratingRepo->updateRank();
 
-        $first_film_updated = Film::find(1); // Ricarica il primo film
+        $first_film_updated = Film::first(); // Ricarica il primo film
 
         /* Controlla che i voti del film 1 siano 6 */
-        $this->assertEquals(6, Rating::where('film_id',1)->get()->count());
+        $this->assertEquals(6, Rating::where('film_id', $first_film_updated->id)->get()->count());
 
         /* Controlla valutazione e media dopo i nuovi voti */
         $this->assertEquals("3.00", $first_film_updated->valutazione);
         $this->assertEquals("3.00", $first_film_updated->media);
 
         /* Controlla rank dei film 1 e 2 */
-        $this->assertEquals(1,$first_film_updated->rank);
-        $this->assertEquals(2,Film::find(2)->rank);
+
+        $this->assertEquals(1, $first_film_updated->rank);
+        $this->assertEquals(2, Film::all()->last()->rank);
 
     }
 
