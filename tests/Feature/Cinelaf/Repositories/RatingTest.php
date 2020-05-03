@@ -137,7 +137,7 @@ class RatingTest extends TestCase
         /**
          * Scenario 2: primo film, voti totali 6, eliminando un voto la valutazione NON scende a 0
          */
-        $this->add_extra_rating_to_film(2,1);
+        $this->add_extra_rating_to_film(2,$first_film_updated->id);
 
         /* Forza nuovamente l'update del Rank */
         $ratingRepo->updateRank();
