@@ -81,7 +81,7 @@ class RatingTest extends TestCase
          */
 
         $first_film = Film::find(1);
-
+dump(Film::all(),$first_film);
         /* Controlla valutazione e media iniziali */
         $this->assertEquals("0.00", $first_film->valutazione);
         $this->assertEquals("5.00", $first_film->media);
