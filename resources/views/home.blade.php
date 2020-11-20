@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
 
-        <div class="row justify-content-center mt-1">
+        <div class="row justify-content-center mt-1 mb-5">
             <div class="col-sm-8">
 
                 <div>
@@ -22,11 +22,13 @@
                         </div>
                     </div>
 
+                    @if(env("SCOUT_DRIVER") == 'algolia')
                     <div class="text-center text-sm-right mr-sm-1">
                         <img src="{{ asset('img/search-by-algolia-light-background.svg') }}"
                              alt="Search by Algolia"
                              style="max-height: 18px;">
                     </div>
+                    @endif
 
                     <div style="position: relative;">
                         <div id="search-result"
