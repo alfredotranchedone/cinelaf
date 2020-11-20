@@ -26,4 +26,14 @@ class Film extends Common
         $this->type = null;
         $this->model = \Cinelaf\Models\Film::class;
     }
+
+
+    public function search($query)
+    {
+        return \Cinelaf\Models\Film::where('titolo','LIKE',"%$query%")
+            ->get(['id','titolo','user_id','anno'])
+            ->load('regista:registi.id,nome,cognome','user:id,name');
+    }
+    
+    
 }

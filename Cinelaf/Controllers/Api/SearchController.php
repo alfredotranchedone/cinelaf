@@ -25,10 +25,10 @@ class SearchController extends BaseApiController
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
-    public function post_search(Request $request)
+    public function post_search(Request $request, \Cinelaf\Repositories\Film $filmRepo)
     {
 
-        $data = Film::search($request->q)->get()->load('regista:registi.id,nome,cognome','user:id,name');
+        $data = $filmRepo->search($request->q);
 
         return $this->success_api_response('search',$data);
 
