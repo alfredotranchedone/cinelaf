@@ -22,13 +22,13 @@
                         </div>
                     </div>
 
+                    <div class="text-center text-sm-right mr-sm-1 mb-4">
                     @if(env("SCOUT_DRIVER") == 'algolia')
-                    <div class="text-center text-sm-right mr-sm-1">
                         <img src="{{ asset('img/search-by-algolia-light-background.svg') }}"
                              alt="Search by Algolia"
                              style="max-height: 18px;">
-                    </div>
                     @endif
+                    </div>
 
                     <div style="position: relative;">
                         <div id="search-result"
