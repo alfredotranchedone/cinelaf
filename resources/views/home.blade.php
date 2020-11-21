@@ -311,6 +311,11 @@
 
                     $results.html(html);
 
+                    $results.on('click','.list-group-item', function (e) {
+                       let _id = $(e.currentTarget).data("entryId");
+                       window.location.href = BASE_URL + '/film/' + _id;
+                    });
+
                     let _exists = (resultCount > 0);
                     // $btnSend.attr('disabled',_exists);
 

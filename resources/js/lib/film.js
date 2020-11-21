@@ -19,7 +19,7 @@ let Film = {
             }
 
             html += `
-                <div class="list-group-item">
+                <div class="list-group-item" data-entry-id="${ v.id }">
                     <h3>${ v.titolo }</h3>
                     <p class="mb-2">
                         <span class="d-inline-block pr-3"> 
